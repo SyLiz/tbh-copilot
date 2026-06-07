@@ -161,6 +161,12 @@ select.lang{font-family:var(--mono);font-size:11px;color:var(--ink);background:#
 .tctl button{font-family:var(--px);font-size:10px;color:var(--ink);background:#0d1220cc;border:1px solid var(--line2);border-radius:8px;padding:6px 9px;cursor:pointer}
 .thint{position:absolute;left:10px;bottom:8px;font-size:10px;color:var(--dim)}
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--mut)}
+.gsl{display:flex;align-items:center;gap:10px;margin-top:11px;padding-top:11px;border-top:1px solid var(--line);font-size:11px;color:var(--mut)}
+.gsl-pre{font-family:var(--px);font-size:8px;letter-spacing:.4px;color:var(--gold);white-space:nowrap}
+.gsl input[type=range]{flex:1;height:4px;-webkit-appearance:none;appearance:none;background:linear-gradient(90deg,#5a4a1f,var(--gold));border-radius:3px;outline:none;cursor:pointer}
+.gsl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid #0d1119;cursor:pointer}
+.gsl input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid #0d1119;cursor:pointer}
+.gsl-val{font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap;min-width:96px;text-align:right}
 .legend span{display:flex;align-items:center;gap:5px}.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
 
 .catbtns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}
@@ -217,7 +223,7 @@ select.lang{font-family:var(--mono);font-size:11px;color:var(--ink);background:#
 .cart{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);margin-bottom:6px}
 .cart .ci{font-family:var(--px);font-size:10px;color:var(--gold);min-width:18px}.cart .cn{flex:1}.cart .cc{color:var(--gold);font-weight:700}
 .spark{width:100%;height:90px;display:block}
-</style></head><body><div class="wrap" id="stage"><div class="top"><div class="logo">TBH <b>CO·PILOT</b></div><div class="live"><span class="dot" id="dot"></span><span id="connTxt">—</span></div><button class="rfbtn" id="refreshBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3.5v5h-5"/></svg></button><div class="sp"></div><select class="lang" id="lang"></select><div class="chip" id="ptime">—</div><div class="chip" id="ver">v—</div></div><div class="banner" id="banner"></div><div class="strip"><div class="s-gold"><div class="lbl"><span id="lblGold">GOLD</span></div><div class="num" id="gold">0</div><div class="sub"><b id="ghr">—</b><span id="lblPerH">/h</span> · <span id="curStage">—</span></div></div><div class="s-stat"><div class="k" id="lblPow">POWER</div><div class="v pow" id="partyPow">—</div><div class="sm" id="partyDps">—</div></div></div><div class="tabs" id="tabs"></div><div class="pane" id="pane-overview"><div id="ovHeroes"></div><div class="grid2"><div class="panel"><div class="ptitle" id="tDoNow">DO NOW</div><div id="doNow"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tSummary">SUMMARY</div><div id="ovSummary"></div></div></div></div><div class="pane" id="pane-farm"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--exp)" id="tFarm2">FARM</div><div id="farm"></div></div><div class="panel"><div class="ptitle" style="--c:var(--warn)" id="tIdle2">IDLE</div><div id="idle"></div></div></div><div class="panel" id="fpTable" style="margin-top:14px"><div class="ptitle" style="--c:var(--gold)" id="tStages">STAGES</div><div id="farmtable"></div></div></div><div class="pane" id="pane-runes"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tRunes2">RUNES</div><div class="treewrap"><svg id="tree" preserveAspectRatio="xMidYMid meet"></svg><div class="tctl"><button id="tFit">fit</button><button id="tIn">+</button><button id="tOut">−</button></div><div class="thint" id="thint"></div><div class="tdetail" id="tdetail"></div></div><div class="legend" id="legend"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tReco">RECOMENDAR</div><div class="catbtns" id="catBtns"></div><div id="recoList"></div></div></div><div class="pane" id="pane-whatif"><div class="panel"><div class="ptitle" style="--c:#9db4ff" id="tGear">GEAR</div><div class="wf-controls"><span class="sub" id="wfHeroLbl">hero</span><select id="wfHero"></select><span class="sub" id="wfHint">—</span></div><div class="slotbar" id="wfSlots"></div><div id="wfCands"></div></div></div><div class="pane" id="pane-hist"><div class="panel"><div class="ptitle" style="--c:var(--pow)">HISTÓRICO · POWER</div><svg class="spark" id="sparkPow" preserveAspectRatio="none"></svg><div id="histPow" class="sub"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)">HISTÓRICO · GOLD</div><svg class="spark" id="sparkGold" preserveAspectRatio="none"></svg><div id="histGold" class="sub"></div></div><div class="note">O histórico acumula a cada leitura do save (guardado local no navegador). Deixe aberto enquanto joga.</div></div><div class="foot" id="foot">100% local</div></div><div class="gate" id="gate"><div class="gcard"><div class="glogo">TBH <b>CO·PILOT</b></div><p id="gateMsg">—</p><button class="btn" id="connectBtn"> CONNECT</button><button class="btn ghost" id="demoBtn">demo</button><div class="gerr" id="gerr"></div><div class="gnote">SaveFile_Live.es3 · AppData\LocalLow\TesseractStudio\TaskbarHero</div></div></div><div class="hsheet" id="hsheet"><div class="hs-card" id="hsCard"></div></div><script src="engine/gamedata.js?v=13"></script><script src="engine/i18n.js?v=13"></script><script src="engine/engine.js?v=13"></script><script src="engine/demo.js?v=13"></script><script>
+</style></head><body><div class="wrap" id="stage"><div class="top"><div class="logo">TBH <b>CO·PILOT</b></div><div class="live"><span class="dot" id="dot"></span><span id="connTxt">—</span></div><button class="rfbtn" id="refreshBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3.5v5h-5"/></svg></button><div class="sp"></div><select class="lang" id="lang"></select><div class="chip" id="ptime">—</div><div class="chip" id="ver">v—</div></div><div class="banner" id="banner"></div><div class="strip"><div class="s-gold"><div class="lbl"><span id="lblGold">GOLD</span></div><div class="num" id="gold">0</div><div class="sub"><b id="ghr">—</b><span id="lblPerH">/h</span> · <span id="curStage">—</span></div></div><div class="s-stat"><div class="k" id="lblPow">POWER</div><div class="v pow" id="partyPow">—</div><div class="sm" id="partyDps">—</div></div></div><div class="tabs" id="tabs"></div><div class="pane" id="pane-overview"><div id="ovHeroes"></div><div class="grid2"><div class="panel"><div class="ptitle" id="tDoNow">DO NOW</div><div id="doNow"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tSummary">SUMMARY</div><div id="ovSummary"></div></div></div></div><div class="pane" id="pane-farm"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--exp)" id="tFarm2">FARM</div><div id="farm"></div></div><div class="panel"><div class="ptitle" style="--c:var(--warn)" id="tIdle2">IDLE</div><div id="idle"></div></div></div><div class="panel" id="fpTable" style="margin-top:14px"><div class="ptitle" style="--c:var(--gold)" id="tStages">STAGES</div><div id="farmtable"></div></div></div><div class="pane" id="pane-runes"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tRunes2">RUNES</div><div class="treewrap"><svg id="tree" preserveAspectRatio="xMidYMid meet"></svg><div class="tctl"><button id="tFit">fit</button><button id="tIn">+</button><button id="tOut">−</button></div><div class="thint" id="thint"></div><div class="tdetail" id="tdetail"></div></div><div class="legend" id="legend"></div><div class="gsl"><span class="gsl-pre" id="gslPre">enable up to</span><input type="range" id="gslRange" min="0" max="1000" value="1000"><span class="gsl-val" id="gslVal">all</span></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tReco">RECOMENDAR</div><div class="catbtns" id="catBtns"></div><div id="recoList"></div></div></div><div class="pane" id="pane-whatif"><div class="panel"><div class="ptitle" style="--c:#9db4ff" id="tGear">GEAR</div><div class="wf-controls"><span class="sub" id="wfHeroLbl">hero</span><select id="wfHero"></select><span class="sub" id="wfHint">—</span></div><div class="slotbar" id="wfSlots"></div><div id="wfCands"></div></div></div><div class="pane" id="pane-hist"><div class="panel"><div class="ptitle" style="--c:var(--pow)">HISTÓRICO · POWER</div><svg class="spark" id="sparkPow" preserveAspectRatio="none"></svg><div id="histPow" class="sub"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)">HISTÓRICO · GOLD</div><svg class="spark" id="sparkGold" preserveAspectRatio="none"></svg><div id="histGold" class="sub"></div></div><div class="note">O histórico acumula a cada leitura do save (guardado local no navegador). Deixe aberto enquanto joga.</div></div><div class="foot" id="foot">100% local</div></div><div class="gate" id="gate"><div class="gcard"><div class="glogo">TBH <b>CO·PILOT</b></div><p id="gateMsg">—</p><button class="btn" id="connectBtn"> CONNECT</button><button class="btn ghost" id="demoBtn">demo</button><div class="gerr" id="gerr"></div><div class="gnote">SaveFile_Live.es3 · AppData\LocalLow\TesseractStudio\TaskbarHero</div></div></div><div class="hsheet" id="hsheet"><div class="hs-card" id="hsCard"></div></div><script src="engine/gamedata.js?v=14"></script><script src="engine/i18n.js?v=14"></script><script src="engine/engine.js?v=14"></script><script src="engine/demo.js?v=14"></script><script>
 const PASSWORD='emuMqG3bLYJ938ZDCfieWJ';
 const $=id=>document.getElementById(id);
 const DB=window.TBH_DB,I18N=window.TBH_I18N,ENG=window.TBHEngine;
@@ -257,7 +263,7 @@ function renderTabs(rec){
 }
 function showTab(){TABS.forEach(([id])=>{$('pane-'+id).classList.toggle('on',id===curTab);});
  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on',el.dataset.tab===curTab));
- if(curTab==='runes'&&lastRec)drawTree(lastRec.runeTree);
+ if(curTab==='runes'&&lastRec){drawTree(lastRec.runeTree);syncGoldSlider();applyTreeFilters();}
  if(curTab==='hist')drawHistory();if(curTab==='whatif')renderWhatIf();}
 
 async function decryptSave(buf){
@@ -508,6 +514,7 @@ function catOf(st){st=st||'';
  if(/Inventory|Stash/.test(st))return'inv';
  return'util';}
 let curRuneCat='almostfree';
+let goldThr=null,CUMCOST={},goldMin=2000,goldMax=1000000;
 function renderRecommend(rec){
  const pt=LOC.startsWith('pt');
  $('tReco').textContent=pt?'RECOMENDAR · o que você quer agora':'RECOMMEND · what you want now';
@@ -517,7 +524,7 @@ function renderRecommend(rec){
  let btns=btn('almostfree',' '+(pt?'Quase grátis':'Almost free'),'var(--gold)',rec.runes.almostFree.length);
  for(const c of RCATS){const n=buyable.filter(([k,x])=>catOf(x.st)===c).length;if(n)btns+=btn(c,RLAB[c],RCOLOR[c],n);}
  $('catBtns').innerHTML=btns;
- $('catBtns').querySelectorAll('.catbtn').forEach(el=>el.onclick=()=>{curRuneCat=el.dataset.cat;renderRecommend(lastRec);if(curTab==='runes')applyCatFilter();});
+ $('catBtns').querySelectorAll('.catbtn').forEach(el=>el.onclick=()=>{curRuneCat=el.dataset.cat;goldThr=null;if($('gslRange'))$('gslRange').value=1000;syncGoldSlider();renderRecommend(lastRec);if(curTab==='runes')applyTreeFilters();});
  let rows='';
  if(curRuneCat==='almostfree'){
  rows=rec.runes.almostFree.slice(0,6).map(c=>recoRow({key:c.key,st:c.st,value:c.value,cost:c.cost,nextLevel:c.nextLevel,farmSeconds:c.farmSeconds,af:true})).join('')
@@ -541,6 +548,18 @@ function applyCatFilter(){
  const match=(curRuneCat==='almostfree')?(n.status==='almostfree'):(catOf(n.st)===curRuneCat);
  g.classList.toggle('fade',!match);});
 }
+function computeCumCost(rt){const nodes=rt.nodes,parents={};for(const[from,to]of rt.edges){(parents[to]=parents[to]||[]).push(from);}
+ const ownd=k=>{const n=nodes[k];return n&&(n.status==='owned'||n.status==='maxed');};const memo={};
+ function cum(k){if(memo[k]!==undefined)return memo[k];const n=nodes[k];if(!n)return Infinity;if(ownd(k))return memo[k]=0;memo[k]=Infinity;const own=(n.cost||0);const ps=parents[k]||[];const pc=ps.length?Math.min(...ps.map(p=>cum(p))):0;return memo[k]=own+pc;}
+ for(const k in nodes)cum(k);CUMCOST=memo;
+ const fin=Object.values(memo).filter(v=>isFinite(v)&&v>0);const pg=(lastMeta&&lastMeta.gold)||0;
+ goldMin=fin.length?Math.min(...fin):1000;goldMax=Math.max(1e6,pg*10);if(fin.length)goldMax=Math.min(goldMax,Math.max(...fin));if(goldMax<=goldMin)goldMax=goldMin*4;}
+function goldFromPos(pos){if(pos>=1000)return null;const lo=Math.log(goldMin),hi=Math.log(goldMax);return Math.round(Math.exp(lo+(pos/1000)*(hi-lo)));}
+function affordCount(){let c=0;for(const k in CUMCOST){const v=CUMCOST[k];if(v>0&&isFinite(v)&&v<=goldThr)c++;}return c;}
+function syncGoldSlider(){const v=$('gslVal');if(!v)return;const p=$('gslPre');if(p)p.textContent=t('gsl_pre');v.textContent=goldThr==null?t('gsl_off'):(fmtK(goldThr)+' · '+affordCount()+' '+t('gsl_n'));}
+function applyTreeFilters(){const svg=$('tree');if(!svg||!lastRec||!lastRec.runeTree)return;const nodes=lastRec.runeTree.nodes;
+ if(goldThr==null){applyCatFilter();return;}
+ svg.querySelectorAll('.tnode').forEach(g=>{const n=nodes[g.dataset.key];if(!n)return;const owned=(n.status==='owned'||n.status==='maxed');g.classList.toggle('fade',!owned&&((CUMCOST[g.dataset.key]||Infinity)>goldThr));});}
 function renderRunes(rec){
  const pt=LOC.startsWith('pt');
  renderRecommend(rec);
@@ -549,7 +568,7 @@ function renderRunes(rec){
  `<span><i style="background:transparent;border-radius:50%;box-shadow:0 0 0 2px var(--gold)"></i> ${pt?'quase grátis':'almost free'}</span>`+
  `<span><i style="background:#fff;border-radius:50%"></i>${pt?'já tem':'owned'}</span>`+
  `<span><i style="background:#fff;opacity:.12;border-radius:50%"></i>${pt?'bloqueada':'locked'}</span>`;
- if(curTab==='runes'){drawTree(rec.runeTree);applyCatFilter();}
+ if(curTab==='runes'){drawTree(rec.runeTree);syncGoldSlider();applyTreeFilters();}
 }
 
 let treeBuilt=false,vb=null;
@@ -588,7 +607,7 @@ function updateTreeColors(rt){
  g.classList.toggle('locked',n.status==='locked');g.classList.toggle('dim',n.status==='skip');
  let txt=g.querySelector('.lvb');if(n.level>0){if(!txt){txt=document.createElementNS('http://www.w3.org/2000/svg','text');txt.setAttribute('class','lvb');txt.setAttribute('x',16);txt.setAttribute('y',40);txt.setAttribute('text-anchor','middle');g.appendChild(txt);}txt.textContent=n.level;}else if(txt)txt.remove();});
 }
-function drawTree(rt){if(!rt)return;if(!treeBuilt)buildTree(rt);else updateTreeColors(rt);}
+function drawTree(rt){if(!rt)return;if(!treeBuilt)buildTree(rt);else updateTreeColors(rt);computeCumCost(rt);}
 function showNode(n,key){if(!n)return;const d=$('tdetail');
  const effTxt=n.st?runeEffect(n.st,n.value):'';
  const cost=n.cost!=null?`<span class="g">${fmt(n.cost)}</span> ${t('node_cost')}${n.farmSeconds?' ('+t('runes_secs',Math.round(n.farmSeconds))+')':''}`:'';
@@ -638,6 +657,7 @@ function openGate(mode){$('gate').classList.remove('hide');$('stage').classList.
 function showDemo(){const d=window.TBH_DEMO;if(!d)return;demoMode=true;PSD=null;$('refreshBtn').classList.remove('on');$('gate').classList.add('hide');$('stage').classList.remove('locked');$('connTxt').textContent=t('demo_mode');render(d.rec,{gold:d.meta.gold,goldPerHour:d.meta.goldPerHour,playTimeH:d.meta.playTimeH,version:d.meta.version});}
 $('demoBtn').onclick=showDemo;
 $('refreshBtn').onclick=forceRefresh;
+$('gslRange').oninput=function(){goldThr=goldFromPos(+this.value);syncGoldSlider();if(curTab==='runes')applyTreeFilters();};
 const sel=$('lang');sel.innerHTML=I18N.LOCALES.map(([c,n])=>`<option value="${c}"${c===LOC?' selected':''}>${n}</option>`).join('');
 sel.onchange=()=>{LOC=sel.value;localStorage.setItem('tbh_loc',LOC);document.documentElement.lang=LOC;treeBuilt=false;if(lastRec)render(lastRec,lastMeta);if(!$('gate').classList.contains('hide'))openGate(handle?'reconnect':'pick');};
 document.documentElement.lang=LOC;
