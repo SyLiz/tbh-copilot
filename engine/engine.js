@@ -207,12 +207,12 @@
  function aggVal(psd, type, sub) { const a = (psd.aggregateSaveDatas||[]).find(x => x.Type === type && x.SubKey === sub); return a ? a.Value : null; }
  function totalClears(psd) { return aggVal(psd, 15, 0); }
  function levelInfo(heroSave, eps) {
- const L = heroSave.HeroLevel || 1;
- const need = expToNext(L, heroSave.HeroExp || 0);
+ const L = heroSave.HeroLevel || 1, cap = 100, maxed = L >= cap;
+ const need = maxed ? 0 : expToNext(L, heroSave.HeroExp || 0);
  const incr = DB.levels[L-1] || 0;
- return { heroKey: heroSave.heroKey, level: L, cap: 100, heroExp: heroSave.HeroExp || 0,
- expToNext: Math.round(need), pct: incr ? Math.min(1, (heroSave.HeroExp||0) / incr) : 1,
- ap: heroSave.AbilityPoint || 0, etaSec: (eps && eps > 0) ? need / eps : null };
+ return { heroKey: heroSave.heroKey, level: L, cap, heroExp: heroSave.HeroExp || 0,
+ expToNext: Math.round(need), pct: maxed ? 1 : (incr ? Math.min(1, (heroSave.HeroExp||0) / incr) : 1),
+ ap: heroSave.AbilityPoint || 0, etaSec: (maxed || !(eps > 0)) ? null : need / eps };
  }
 
  const stageLevelOf = key => (DB.stages[key] || {}).lvl;
@@ -245,10 +245,6 @@
  function stageRates(s, t, goldMult, expMult, fit) {
  fit = fit == null ? 1 : fit;
  return { clearTime: t, fit, goldPerSec: s.gold * (goldMult || 1) / t, expPerSec: s.exp * fit * (expMult || 1) / t };
- }
-
- function clearable(s, D, maxLvl) {
- return clearTime(s, D) <= PARAMS.CLEAR_CAP && (s.lvl <= maxLvl + PARAMS.LEVEL_TOLERANCE);
  }
 
  function bestFarm(psd, D, opts) {
@@ -460,7 +456,6 @@
  if (slot === 0) return h.mainW; if (slot === 1) return h.subW;
  return PARAMS.SLOT_TYPES[slot];
  }
- const gradeRank = grade => { const i = DB.grades.indexOf(grade); return i < 0 ? -1 : i; };
  function gearAdvisor(psd, stageLevel) {
  stageLevel = stageLevel || refStageLevel(psd);
  const hsm = heroSaveMap(psd), ism = itemSaveMap(psd), rstats = runeContrib(psd);
@@ -680,9 +675,9 @@
  const runes = runePlan(psd, opts.goldPerSec, refSL);
  const runeTree = runeTreeStatus(psd, opts.goldPerSec, refSL);
  const gear = gearAdvisor(psd, refSL);
- const refKey = farm.frontier ? farm.frontier.key : (farm.current && farm.current.key);
- const pushKey = farm.push ? farm.push.key : refKey;
- const surv = survival(psd, heroes, D, pushKey, refKey);
+ const pushKey = farm.push ? farm.push.key : (farm.frontier && farm.frontier.key);
+ const refKey = String((psd.commonSaveData || {}).maxCompletedStage);
+ const surv = pushKey ? survival(psd, heroes, D, pushKey, DB.stages[refKey] ? refKey : null) : null;
  const comp = partyComp(psd);
  const enchant = enchantAdvisor(psd, refSL);
  const ap = apAdvisor(psd, refSL);
