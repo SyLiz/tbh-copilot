@@ -30,7 +30,7 @@ nothing ever leaves your machine.
 | **Farm optimizer** | The wiki Farming Optimizer idea, automated. It calibrates your real clear rate from your measured gold/sec and ranks every cleared stage by gold/hour and exp/hour, with a sortable table (clear time, EXP/HP and Gold/HP density). It sends you to the dense, fast stage instead of an unclearable floor. |
 | **Idle / return timer** | Offline reward curve, the optimal time to come back (the 8 h cap), and what to park on first. |
 | **Interactive rune tree** | All 197 nodes laid out and colored by category. Pick a category (EXP, Combat, Gold, Items, Chest, Inventory, Offline, Utility) and the tree highlights that branch and lists the three cheapest buyable nodes. Almost-free runes are called out. |
-| **Build planners** | Power delta per rune, the cheapest path to your first DPS rune, an ordered gold-spend cart, attribute-point and enchant advice, pet and synthesis tips, all in the Lab. |
+| **Build planners** | Power delta per rune, the cheapest path to your first DPS rune, an ordered gold-spend cart, attribute-point and enchant advice, pet and synthesis tips, in the Build and Economy tabs. |
 | **Gear advisor** | Per slot "is it worth swapping?" with the POWER delta of any change, plus empty-jewelry and enchant nudges. |
 | **16 languages** | UI and game content localized; the stat model is calibrated against the in-game Status panel. |
 
@@ -48,8 +48,9 @@ nothing ever leaves your machine.
    `%USERPROFILE%\AppData\LocalLow\TesseractStudio\TaskbarHero\SaveFile_Live.es3`
 3. Done. It tracks the save live and updates as you play. Or click "demo" to look around first.
 
-**Lab (`tools/lab.html`)** is the what-if simulator (POWER delta per item), history charts, and the
-build, economy and drops panels.
+Everything lives on this one page: alongside the overview, farm, runes and gear tabs there are the
+**What-if** simulator (POWER delta of every item in your bag), **Build**, **Economy**, **Drops**,
+**Goals**, **History** charts and **Config** tabs.
 
 ## How it works
 
@@ -58,12 +59,12 @@ into `engine/gamedata.js`. There are no network calls at runtime, no backend, an
 
 One engine drives both surfaces: `engine/engine.js` (UMD, runs in the browser and in Node) computes
 effective DPS/EHP/POWER, leveling, the calibrated farm optimizer, idle, the rune tree and planners, and the
-gear and enchant deltas. The dashboard and the Lab both call the same `recommend()`. The stat
-model was checked against the in-game Status panel so the numbers match what the game shows.
+gear and enchant deltas. Every tab calls the same `recommend()`. The stat model was checked against
+the in-game Status panel so the numbers match what the game shows.
 
 ```
-dashboard.html        the live dashboard (open this)
-tools/lab.html        the Lab: what-if, history, build, economy, drops
+index.html            landing page
+dashboard.html        the whole app (open this)
 engine/               engine.js, gamedata.js, i18n.js, demo.js, build scripts
 assets/               game icons and sprites the UI shows
 data/                 trimmed stage and rune tables

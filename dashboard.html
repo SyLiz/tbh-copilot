@@ -185,7 +185,23 @@ select.lang{font-family:var(--mono);font-size:11px;color:var(--ink);background:#
 .btn{font-family:var(--px);font-size:12px;border:0;border-radius:11px;padding:14px 20px;cursor:pointer;background:linear-gradient(180deg,#f6c552,#e0a93a);color:#1a1306;box-shadow:0 8px 24px -8px #f6c55266,inset 0 1px 0 #fff6;transition:transform .12s}.btn:hover{transform:translateY(-1px)}
 .btn.ghost{background:#0d1220;color:var(--mut);border:1px solid var(--line2);box-shadow:none;margin-top:10px;font-size:10px}
 .gnote{color:var(--dim);font-size:11px;margin-top:16px;line-height:1.6}.gerr{color:#ffb3a8;font-size:12px;margin-top:12px;min-height:16px}
-</style></head><body><div class="wrap" id="stage"><div class="top"><div class="logo">TBH <b>CO·PILOT</b></div><div class="live"><span class="dot" id="dot"></span><span id="connTxt">—</span></div><div class="sp"></div><select class="lang" id="lang"></select><div class="chip" id="ptime">—</div><div class="chip" id="ver">v—</div></div><div class="banner" id="banner"></div><div class="strip"><div class="s-gold"><div class="lbl"><span id="lblGold">GOLD</span></div><div class="num" id="gold">0</div><div class="sub"><b id="ghr">—</b><span id="lblPerH">/h</span> · <span id="curStage">—</span></div></div><div class="s-stat"><div class="k" id="lblPow">POWER</div><div class="v pow" id="partyPow">—</div><div class="sm" id="partyDps">—</div></div></div><div class="tabs" id="tabs"></div><div class="pane" id="pane-overview"><div id="ovHeroes"></div><div class="grid2"><div class="panel"><div class="ptitle" id="tDoNow">DO NOW</div><div id="doNow"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tSummary">SUMMARY</div><div id="ovSummary"></div></div></div></div><div class="pane" id="pane-farm"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--exp)" id="tFarm2">FARM</div><div id="farm"></div></div><div class="panel"><div class="ptitle" style="--c:var(--warn)" id="tIdle2">IDLE</div><div id="idle"></div></div></div></div><div class="pane" id="pane-runes"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tRunes2">RUNES</div><div class="treewrap"><svg id="tree" preserveAspectRatio="xMidYMid meet"></svg><div class="tctl"><button id="tFit">⤢</button><button id="tIn">+</button><button id="tOut">−</button></div><div class="thint" id="thint"></div><div class="tdetail" id="tdetail"></div></div><div class="legend" id="legend"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tReco">RECOMENDAR</div><div class="catbtns" id="catBtns"></div><div id="recoList"></div></div></div><div class="pane" id="pane-gear"><div class="panel"><div class="ptitle" style="--c:#9db4ff" id="tGear2">GEAR</div><div id="gear"></div></div></div><div class="foot" id="foot">100% local</div></div><div class="gate" id="gate"><div class="gcard"><div class="glogo">TBH <b>CO·PILOT</b></div><p id="gateMsg">—</p><button class="btn" id="connectBtn"> CONNECT</button><button class="btn ghost" id="demoBtn">demo</button><div class="gerr" id="gerr"></div><div class="gnote">SaveFile_Live.es3 · AppData\LocalLow\TesseractStudio\TaskbarHero</div></div></div><div class="hsheet" id="hsheet"><div class="hs-card" id="hsCard"></div></div><script src="engine/gamedata.js"></script><script src="engine/i18n.js"></script><script src="engine/engine.js"></script><script src="engine/demo.js"></script><script>
+.pill{font-family:var(--px);font-size:9px;padding:2px 7px;border-radius:5px;border:1px solid var(--line2);color:var(--mut)}
+.pill.good{color:#0a0e16;background:var(--good);border:0}.pill.warn{color:#1a0e06;background:var(--warn);border:0}.pill.bad{color:#fff;background:var(--bad);border:0}
+.wf-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.slotbar{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-bottom:12px}
+@media(max-width:600px){.slotbar{grid-template-columns:repeat(5,1fr)}}
+.slotcell{aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:#0a0e16;display:grid;place-items:center;cursor:pointer;font-size:8px;color:var(--mut);text-align:center;font-family:var(--px);padding:2px;position:relative}
+.slotcell.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.slotcell.empty{border-style:dashed}.slotcell .lv{position:absolute;bottom:1px;right:2px;font-size:8px;color:var(--exp)}
+.cand{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);margin-bottom:7px}
+.cand.eq{border-color:var(--line2);background:#0e1422}.cand.best{border-color:var(--good)}
+.cand .cn{flex:1;min-width:0}.cand .cgt{font-weight:700;font-size:12px}.cand .cmeta{font-size:11px;color:var(--mut)}
+.cand .dp{font-weight:800;font-variant-numeric:tabular-nums;font-size:15px;min-width:90px;text-align:right}
+.dp.pos{color:var(--good)}.dp.neg{color:var(--bad)}.dp.zero{color:var(--mut)}
+.cart{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);margin-bottom:6px}
+.cart .ci{font-family:var(--px);font-size:10px;color:var(--gold);min-width:18px}.cart .cn{flex:1}.cart .cc{color:var(--gold);font-weight:700}
+.spark{width:100%;height:90px;display:block}
+</style></head><body><div class="wrap" id="stage"><div class="top"><div class="logo">TBH <b>CO·PILOT</b></div><div class="live"><span class="dot" id="dot"></span><span id="connTxt">—</span></div><div class="sp"></div><select class="lang" id="lang"></select><div class="chip" id="ptime">—</div><div class="chip" id="ver">v—</div></div><div class="banner" id="banner"></div><div class="strip"><div class="s-gold"><div class="lbl"><span id="lblGold">GOLD</span></div><div class="num" id="gold">0</div><div class="sub"><b id="ghr">—</b><span id="lblPerH">/h</span> · <span id="curStage">—</span></div></div><div class="s-stat"><div class="k" id="lblPow">POWER</div><div class="v pow" id="partyPow">—</div><div class="sm" id="partyDps">—</div></div></div><div class="tabs" id="tabs"></div><div class="pane" id="pane-overview"><div id="ovHeroes"></div><div class="grid2"><div class="panel"><div class="ptitle" id="tDoNow">DO NOW</div><div id="doNow"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tSummary">SUMMARY</div><div id="ovSummary"></div></div></div></div><div class="pane" id="pane-farm"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--exp)" id="tFarm2">FARM</div><div id="farm"></div></div><div class="panel"><div class="ptitle" style="--c:var(--warn)" id="tIdle2">IDLE</div><div id="idle"></div></div></div></div><div class="pane" id="pane-runes"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tRunes2">RUNES</div><div class="treewrap"><svg id="tree" preserveAspectRatio="xMidYMid meet"></svg><div class="tctl"><button id="tFit">⤢</button><button id="tIn">+</button><button id="tOut">−</button></div><div class="thint" id="thint"></div><div class="tdetail" id="tdetail"></div></div><div class="legend" id="legend"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tReco">RECOMENDAR</div><div class="catbtns" id="catBtns"></div><div id="recoList"></div></div></div><div class="pane" id="pane-gear"><div class="panel"><div class="ptitle" style="--c:#9db4ff" id="tGear2">GEAR</div><div id="gear"></div></div></div><div class="pane" id="pane-whatif"><div class="panel"><div class="ptitle" style="--c:var(--pow)">WHAT-IF · gear</div><div class="wf-controls"><span class="sub">herói</span><select id="wfHero"></select><span class="sub">— clique num slot pra ver o ΔPOWER de cada item da bag —</span></div><div class="slotbar" id="wfSlots"></div><div id="wfCands"></div></div></div><div class="pane" id="pane-goals"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--good)">META / PRONTIDÃO</div><div id="goalBox"></div></div><div class="panel"><div class="ptitle" style="--c:var(--exp)">LINHA DO TEMPO</div><div id="forecastBox"></div></div></div><div class="panel"><div class="ptitle" style="--c:var(--exp)">XP ATÉ NÍVEIS-ALVO</div><div id="xpBox"></div></div></div><div class="pane" id="pane-build"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--gold)">ATRIBUTOS · onde gastar AP</div><div id="apBox"></div></div><div class="panel"><div class="ptitle" style="--c:var(--violet)">ENCHANT · slots abertos</div><div id="enchBox"></div></div></div></div><div class="pane" id="pane-econ"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--gold)">PLANO DE GOLD · carrinho</div><div id="goldBox"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)">PETS</div><div id="petBox"></div></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)">ALQUIMIA / MERCADO · itens soltos</div><div id="alcBox"></div></div></div><div class="pane" id="pane-drops"><div class="panel"><div class="ptitle" style="--c:var(--good)">DROPS · onde farmar por upgrade</div><div id="dropProg"></div></div><div class="panel"><div class="ptitle" style="--c:var(--exp)">MELHORES FONTES DE DROP</div><div id="dropStages"></div></div></div><div class="pane" id="pane-hist"><div class="panel"><div class="ptitle" style="--c:var(--pow)">HISTÓRICO · POWER</div><svg class="spark" id="sparkPow" preserveAspectRatio="none"></svg><div id="histPow" class="sub"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)">HISTÓRICO · GOLD</div><svg class="spark" id="sparkGold" preserveAspectRatio="none"></svg><div id="histGold" class="sub"></div></div><div class="note">O histórico acumula a cada leitura do save (guardado local no navegador). Deixe aberto enquanto joga.</div></div><div class="pane" id="pane-cfg"><div class="panel"><div class="ptitle">CONSTANTES DO ENGINE (PARAMS)</div><div id="cfgBox"></div><div class="note">Parâmetros do modelo (confirmados pelo binário do jogo).</div></div></div><div class="foot" id="foot">100% local</div></div><div class="gate" id="gate"><div class="gcard"><div class="glogo">TBH <b>CO·PILOT</b></div><p id="gateMsg">—</p><button class="btn" id="connectBtn"> CONNECT</button><button class="btn ghost" id="demoBtn">demo</button><div class="gerr" id="gerr"></div><div class="gnote">SaveFile_Live.es3 · AppData\LocalLow\TesseractStudio\TaskbarHero</div></div></div><div class="hsheet" id="hsheet"><div class="hs-card" id="hsCard"></div></div><script src="engine/gamedata.js?v=2"></script><script src="engine/i18n.js?v=2"></script><script src="engine/engine.js?v=2"></script><script src="engine/demo.js?v=2"></script><script>
 const PASSWORD='emuMqG3bLYJ938ZDCfieWJ';
 const $=id=>document.getElementById(id);
 const DB=window.TBH_DB,I18N=window.TBH_I18N,ENG=window.TBHEngine;
@@ -212,7 +228,7 @@ const fmtK=n=>{if(n==null||isNaN(n))return'—';n=Math.round(n);if(n>=1e6)return
 const fmtDur=s=>{if(s==null)return'—';s=Math.round(s);if(s<90)return s+'s';const m=Math.round(s/60);return m<90?m+'min':(s/3600).toFixed(1)+'h'};
 const CVAR={Priest:'#ffd98a',Ranger:'#74d28e',Sorcerer:'#a98cff',Knight:'#9db4ff',Hunter:'#74d28e',Slayer:'#ff8a5c'};
 
-const TABS=[['overview','tab_overview'],['farm','tab_farm'],['runes','tab_runes'],['gear','tab_gear']];
+const TABS=[['overview','tab_overview'],['farm','tab_farm'],['runes','tab_runes'],['gear','tab_gear'],['whatif','tab_whatif'],['build','tab_build'],['econ','tab_econ'],['drops','tab_drops'],['goals','tab_goals'],['hist','tab_hist'],['cfg','tab_cfg']];
 if(!TABS.some(([id])=>id===(localStorage.getItem('tbh_tab')||'overview')))localStorage.setItem('tbh_tab','overview');
 let curTab=localStorage.getItem('tbh_tab')||'overview';
 function renderTabs(rec){
@@ -225,7 +241,8 @@ function renderTabs(rec){
 }
 function showTab(){TABS.forEach(([id])=>{$('pane-'+id).classList.toggle('on',id===curTab);});
  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on',el.dataset.tab===curTab));
- if(curTab==='runes'&&lastRec)drawTree(lastRec.runeTree);}
+ if(curTab==='runes'&&lastRec)drawTree(lastRec.runeTree);
+ if(curTab==='hist')drawHistory();if(curTab==='whatif')renderWhatIf();}
 
 async function decryptSave(buf){
  const b=new Uint8Array(buf),iv=b.slice(0,16),ct=b.slice(16);
@@ -242,9 +259,124 @@ function clearSec(){if(samples.length<2)return null;let dc=0,d=0;for(let i=1;i<s
 function goldPerSec(){return rateOf('g');}
 function expPerSec(){return rateOf('x');}
 
+let REC=null,PSD=null,demoMode=false,wfHero=null,wfSlot=null;
+const dpClass=d=>d>0.5?'pos':d<-0.5?'neg':'zero';
+const dpStr=d=>(d>0?'+':'')+fmt(d);
+const petName=p=>p&&p.name?nm(p.name):'pet';
+const SLOT_NAMES=['Arma','Sec','Elmo','Peito','Luvas','Botas','Amul','Brinco','Anel','Brac'];
+function slotGearType(heroKey,slot){
+ if(REC){const s=REC.gear.slots.find(x=>x.heroKey===heroKey&&x.slot===slot);if(s)return s.gearType;}
+ const h=DB.heroes[String(heroKey)]||{};
+ if(slot===0)return h.mainW;if(slot===1)return h.subW;
+ return [null,null,'HELMET','ARMOR','GLOVES','BOOTS','AMULET','EARING','RING','BRACER'][slot];
+}
+function renderWhatIf(){
+ if(!REC){$('wfCands').innerHTML='';return;}
+ const party=REC.meta.party;
+ if(wfHero==null)wfHero=REC.meta.carryHero||party[0];
+ $('wfHero').innerHTML=party.map(k=>`<option value="${k}"${k===wfHero?' selected':''}>${heroName(k)}</option>`).join('');
+ $('wfHero').onchange=()=>{wfHero=+$('wfHero').value;wfSlot=null;renderWhatIf();};
+ const slots=REC.gear.slots.filter(s=>s.heroKey===wfHero).sort((a,b)=>a.slot-b.slot);
+ $('wfSlots').innerHTML=slots.map(s=>{const lvl=s.current?`<span class="lv">${s.current.level}</span>`:'';
+ return `<div class="slotcell ${s.slot===wfSlot?'on':''} ${s.current?'':'empty'}" data-slot="${s.slot}">${SLOT_NAMES[s.slot]}${lvl}</div>`;}).join('');
+ $('wfSlots').querySelectorAll('.slotcell').forEach(c=>c.onclick=()=>{wfSlot=+c.dataset.slot;renderWhatIf();});
+ if(wfSlot==null){$('wfCands').innerHTML='<div class="note">Selecione um slot acima.</div>';return;}
+ if(demoMode||!PSD){$('wfCands').innerHTML='<div class="note">O what-if completo (testar cada item que você tem) precisa do save conectado. No demo, veja o melhor swap na aba GEAR.</div>';return;}
+ const gt=slotGearType(wfHero,wfSlot);
+ const hsm=ENG.heroSaveMap(PSD), heroSave=hsm[wfHero];
+ const equippedElsewhere=new Set();
+ for(const hk of REC.meta.party){if(hk===wfHero)continue;for(const u of (hsm[hk]||{}).equippedItemIds||[])if(u)equippedElsewhere.add(u);}
+ const curUid=(heroSave.equippedItemIds||[])[wfSlot]||0;
+ const cands=[];
+ for(const it of PSD.itemSaveDatas||[]){const idb=DB.items[it.ItemKey];if(!idb||idb.gt!==gt)continue;
+ if(it.UniqueId!==curUid&&equippedElsewhere.has(it.UniqueId))continue;
+ const d=ENG.powerDelta(heroSave,PSD,wfSlot,it.ItemKey);
+ cands.push({key:it.ItemKey,uid:it.UniqueId,grade:idb.grade,level:idb.lvl,dPower:d.dPower,dDps:d.dDps,dEhp:d.dEhp,equipped:it.UniqueId===curUid});}
+ if(curUid){const d=ENG.powerDelta(heroSave,PSD,wfSlot,null);cands.push({key:null,grade:'—',level:0,dPower:d.dPower,dDps:d.dDps,dEhp:d.dEhp,empty:true});}
+ cands.sort((a,b)=>b.dPower-a.dPower);
+ const maxd=Math.max(0,...cands.map(c=>c.dPower));
+ $('wfCands').innerHTML=cands.length?cands.map(c=>{const best=c.dPower>0&&c.dPower===maxd;
+ const name=c.empty?'(esvaziar slot)':`${titlecase(gt)} ${c.grade}`;
+ return `<div class="cand ${c.equipped?'eq':''} ${best?'best':''}"><div class="cn"><div class="cgt">${name} ${c.equipped?'<span class="pill good">EQUIPADO</span>':''} ${best&&!c.equipped?'<span class="pill good">MELHOR</span>':''}</div><div class="cmeta">${c.empty?'':('nv '+c.level+' · ')}ΔDPS ${dpStr(c.dDps)} · ΔEHP ${dpStr(c.dEhp)}</div></div><div class="dp ${dpClass(c.dPower)}">${dpStr(c.dPower)}<div class="sub">ΔPOWER</div></div></div>`;
+ }).join(''):'<div class="note">Nenhum item desse tipo na bag.</div>';
+}
+function renderGoals(){
+ if(!REC)return;
+ const g=REC.goal||{};const rc=g.rating==='comfortable'?'good':g.rating==='tight'?'warn':'bad';
+ $('goalBox').innerHTML=(g.label?(`<div class="row"><span class="l">Próximo alvo de farm</span><span class="v">[${g.label}] nv ${g.level} <span class="pill ${rc}">${g.rating||''}</span></span></div>`+
+ `<div class="row"><span class="l">Gap de nível</span><span class="v">${g.levelGap>0?('+'+g.levelGap):'ok'}</span></div>`+
+ `<div class="row"><span class="l">Prontidão (EHP vs dano)</span><span class="v">${Math.round((g.readiness||0)*100)}%</span></div>`+
+ `<div class="note">${g.needsMorePower?'Precisa de mais POWER/EHP pra empurrar com segurança.':'Você aguenta o próximo alvo — pode subir.'}</div>`):'<div class="note">—</div>')+
+ `<div class="note"><b>Dicas (wiki):</b> Ranger = clear rápido no início · Priest é o 2º slot essencial · se travar, volte e grinde nível/gear · casters AOE limpam waves inteiras.</div>`;
+ const f=REC.forecast||{};let h='';
+ for(const n of (f.nextLevel||[]))h+=`<div class="row"><span class="l">${heroName(n.heroKey)} próximo nível</span><span class="v">${fmtDur(n.etaSec)}</span></div>`;
+ if(f.idleCapSec)h+=`<div class="row"><span class="l">Cap de idle</span><span class="v">${fmtDur(f.idleCapSec)}</span></div>`;
+ if(f.goldPerSec!=null)h+=`<div class="row"><span class="l">Gold/seg medido</span><span class="v">${(f.goldPerSec).toFixed(1)}/s</span></div>`;
+ $('forecastBox').innerHTML=h||'<div class="note">—</div>';
+ $('xpBox').innerHTML=(REC.xpForecast||[]).map(x=>{const tg=(x.targets||[]).map(t=>`<span class="pill">nv${t.level}: ${fmtDur(t.etaSec)}</span>`).join(' ');
+ return `<div class="row"><span class="l">${heroName(x.heroKey)} <span class="sub">(nv ${x.level})</span></span><span class="v" style="font-weight:400">${tg}</span></div>`;}).join('')||'<div class="note">—</div>';
+}
+function renderBuild(){
+ if(!REC)return;
+ $('apBox').innerHTML=(REC.ap||[]).map(a=>a.best?
+ `<div class="row"><span class="l">${heroName(a.heroKey)} <span class="pill warn">${a.ap} AP</span></span><span class="v">${statName(a.best.stat)} +${a.best.value} <span class="dp pos" style="font-size:12px">${dpStr(a.best.dPower)}</span></span></div>`:
+ `<div class="row"><span class="l">${heroName(a.heroKey)}</span><span class="v sub">${a.ap||0} AP — sem alvo</span></div>`).join('')||'<div class="note">Sem pontos de atributo pra gastar agora.</div>';
+ const e=REC.enchant||{};
+ $('enchBox').innerHTML=((e.perHero||[]).map(p=>`<div class="row"><span class="l">${heroName(p.heroKey)} <span class="sub">${p.open} slots</span></span><span class="v">${statName(p.stat)} <span class="dp pos" style="font-size:12px">~${dpStr(p.dPower)}</span></span></div>`).join(''))+(e.totalOpen?`<div class="note">${e.totalOpen} slots de enchant abertos no total — maior alavanca de gear hoje.</div>`:'')||'<div class="note">—</div>';
+}
+function renderEcon(){
+ if(!REC)return;
+ const gp=REC.goldPlan||{};
+ $('goldBox').innerHTML=((gp.cart||[]).map((c,i)=>`<div class="cart"><span class="ci">${i+1}</span><span class="cn">${runeName(c.key)} <span class="sub">${runeEffect(c.st||c.stat,c.value||c.v)}</span></span><span class="cc">${fmt(c.cost)}g</span></div>`).join(''))+(gp.totalCost?`<div class="note">Carrinho: <b>${fmt(gp.totalCost)}g</b> · ganho <b style="color:var(--pow)">${dpStr(gp.totalPower)} POWER</b> (você tem ${fmt(gp.gold)}g).</div>`:'')||'<div class="note">—</div>';
+ const p=REC.pets||{};const pn=k=>{const x=DB.pets&&DB.pets[String(k)];return x&&x.name?nm(x.name):('#'+k);};
+ let ph=`<div class="row"><span class="l">Pets desbloqueados</span><span class="v">${(p.unlocked||[]).length}/${((p.unlocked||[]).length+(p.locked||[]).length)||'?'}</span></div>`;
+ if(p.unlockNext)ph+=`<div class="row"><span class="l">Próximo a desbloquear</span><span class="v">${pn(p.unlockNext)}${p.batUnlocked===false?'<span class="pill warn">prioridade</span>':''}</span></div>`;
+ const pl=(k,lbl)=>k?`<div class="row"><span class="l sub">${lbl} (passivo)</span><span class="v" style="font-weight:400">${petName(k)} <span class="sub">+${k.value}</span></span></div>`:'';
+ ph+=pl(p.bestGold,'+ gold')+pl(p.bestExp,'+ exp')+pl(p.bestDrop,'+ drop');
+ ph+=`<div class="note">Bônus de pet são <b>passivos</b>: valem assim que desbloqueados. <b>Priorize o Bat</b> — os outros vêm naturalmente. <span class="sub">— wiki</span></div>`;
+ $('petBox').innerHTML=ph;
+ const a=REC.alchemy||{};
+ $('alcBox').innerHTML=a.looseItems!=null?(`<div class="row"><span class="l">Itens soltos (não equipados)</span><span class="v">${a.looseItems}</span></div>`+
+ `<div class="row"><span class="l">Vender tudo (alchemy)</span><span class="v" style="color:var(--gold)">${fmt(a.sellGold)}g</span></div>`+
+ `<div class="row"><span class="l">Cube exp se converter</span><span class="v">${fmt(a.cubeExp)}</span></div>`):'<div class="note">—</div>';
+}
+function renderCfg(){const P=(REC&&REC.params)||ENG.PARAMS||{};
+ $('cfgBox').innerHTML=Object.entries(P).filter(([k,v])=>typeof v==='number').map(([k,v])=>`<div class="row"><span class="l">${k}</span><span class="v">${v}</span></div>`).join('');}
+function renderDropsLab(){
+ if(!REC)return;
+ const gp=REC.gearProgression||{};
+ const adv={push_for_drops:'Empurre pra estágios mais altos — seu gear está atrás da fronteira.',on_track:'Seu gear acompanha os estágios.',ahead:'Gear à frente; foque runas/atributos.'}[gp.advice]||gp.advice||'';
+ $('dropProg').innerHTML=(gp.avgItemLevel!=null?(`<div class="row"><span class="l">Nível médio do seu gear</span><span class="v">${gp.avgItemLevel}</span></div>`+
+ `<div class="row"><span class="l">Fronteira (maior estágio aberto)</span><span class="v">nv ${gp.frontierLevel}</span></div>`+
+ `<div class="row"><span class="l">Gap</span><span class="v" style="color:${gp.gap>0?'var(--warn)':'var(--good)'}">${gp.gap>0?('+'+gp.gap+' níveis atrás'):'em dia'}</span></div>`+
+ `<div class="note">${adv} O gear que dropa acompanha o nível do estágio — farme o mais alto que você limpa com folga.</div>`):'<div class="note">—</div>');
+ const all=(REC.farm&&REC.farm.all)?REC.farm.all.slice():[];all.sort((a,b)=>b.lvl-a.lvl);
+ const cur=REC.farm&&REC.farm.current?REC.farm.current.key:null;
+ $('dropStages').innerHTML=all.length?all.slice(0,8).map(s=>`<div class="row"><span class="l">[${s.label}] <span class="sub">nv ${s.lvl}</span>${s.key===cur?'<span class="pill">aqui</span>':''}</span><span class="v" style="font-weight:400"><span class="sub">gear até ~nv ${s.lvl} · </span>${fmtK(s.goldPerSec)}g/s</span></div>`).join(''):'<div class="note">—</div>';
+}
+const hdb=()=>new Promise((res,rej)=>{const r=indexedDB.open('tbh_lab',1);r.onupgradeneeded=()=>r.result.createObjectStore('hist',{keyPath:'t'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});
+async function histPut(rec){try{const db=await hdb();const power=rec.heroes.reduce((a,h)=>a+h.power,0);const pt=rec.__pt||0;if(!pt)return;
+ await new Promise((res,rej)=>{const x=db.transaction('hist','readwrite');x.objectStore('hist').put({t:pt,power:Math.round(power),gold:rec.meta.gold,lvl:rec.meta.maxPartyLevel});x.oncomplete=()=>res();x.onerror=()=>rej(x.error);});}catch(e){}}
+async function histAll(){try{const db=await hdb();return await new Promise((res,rej)=>{const x=db.transaction('hist','readonly').objectStore('hist').getAll();x.onsuccess=()=>res(x.result||[]);x.onerror=()=>rej(x.error);});}catch(e){return[];}}
+function spark(svg,pts,key,color){const el=$(svg);if(!el)return;if(!pts.length){el.innerHTML='';return;}
+ const W=600,H=90,pad=4,xs=pts.map(p=>p.t),ys=pts.map(p=>p[key]);
+ const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+ const sx=t=>x1>x0?pad+(t-x0)/(x1-x0)*(W-2*pad):W/2,sy=v=>y1>y0?H-pad-(v-y0)/(y1-y0)*(H-2*pad):H/2;
+ el.setAttribute('viewBox',`0 0 ${W} ${H}`);
+ const d=pts.map((p,i)=>(i?'L':'M')+sx(p.t).toFixed(1)+' '+sy(p[key]).toFixed(1)).join(' ');
+ const area=`M${sx(pts[0].t)} ${H} `+pts.map(p=>'L'+sx(p.t).toFixed(1)+' '+sy(p[key]).toFixed(1)).join(' ')+` L${sx(pts[pts.length-1].t)} ${H} Z`;
+ el.innerHTML=`<path d="${area}" fill="${color}22"/><path d="${d}" fill="none" stroke="${color}" stroke-width="2"/>`;}
+async function drawHistory(){const pts=(await histAll()).sort((a,b)=>a.t-b.t);
+ spark('sparkPow',pts,'power','#ff6fae');spark('sparkGold',pts,'gold','#f6c552');
+ if(pts.length>=2){const f=pts[0],l=pts[pts.length-1];
+ $('histPow').textContent=`${pts.length} amostras · POWER ${fmt(f.power)} → ${fmt(l.power)} (${dpStr(l.power-f.power)})`;
+ $('histGold').textContent=`gold ${fmt(f.gold)} → ${fmt(l.gold)}`;
+ }else $('histPow').textContent='Coletando… deixe aberto enquanto joga.';}
+function renderLab(){renderWhatIf();renderGoals();renderBuild();renderEcon();renderDropsLab();renderCfg();if(curTab==='hist')drawHistory();}
+
 let lastRec=null,lastMeta=null;
 function render(rec,meta){
- lastRec=rec;lastMeta=meta;
+ lastRec=rec;REC=rec;lastMeta=meta;
  $('foot').textContent=t('footer');$('lblGold').textContent=t('gold');$('lblPerH').textContent=t('per_hour');$('lblPow').textContent=t('power');
  $('tDoNow').textContent=t('do_now');$('tSummary').textContent=t('summary');
  $('tFarm2').textContent=t('farming');$('tIdle2').textContent=t('idle_title');$('tRunes2').textContent=t('tree_title');
@@ -254,7 +386,7 @@ function render(rec,meta){
  $('curStage').innerHTML='['+stageLabel(rec.meta.currentStage)+'] '+stageName(rec.meta.currentStage);
  $('partyPow').textContent=fmt(rec.heroes.reduce((a,h)=>a+h.power,0));
  $('partyDps').textContent=t('dps')+' '+fmtK(rec.meta.partyDPS);
- renderTabs(rec);renderOvHeroes(rec);renderDoNow(rec);renderSummary(rec,meta);renderFarm(rec);renderIdle(rec);renderRunes(rec);renderGear(rec);
+ renderTabs(rec);renderOvHeroes(rec);renderDoNow(rec);renderSummary(rec,meta);renderFarm(rec);renderIdle(rec);renderRunes(rec);renderGear(rec);renderLab();
 }
 function renderOvHeroes(rec){
  const pt=LOC.startsWith('pt');
@@ -505,12 +637,12 @@ let handle=null,lastMtime=-1,timer=null,pollMs=2000;
 function setLive(on){$('dot').classList.toggle('on',on);$('connTxt').textContent=on?t('live'):t('reconnecting');}
 async function readOnce(){try{
  const file=await handle.getFile();if(file.lastModified===lastMtime)return false;lastMtime=file.lastModified;
- const psd=await decryptSave(await file.arrayBuffer());const c=psd.commonSaveData;
+ const psd=await decryptSave(await file.arrayBuffer());const c=psd.commonSaveData;PSD=psd;demoMode=false;
  if(c.currentStageKey!==lastStage){samples=[];lastStage=c.currentStageKey;}
  sampleGold(Math.round(c.playTime),ENG.gold(psd),ENG.partyExp(psd),ENG.totalClears(psd));
  const gps=goldPerSec(),eps=expPerSec(),cs=clearSec();
  if(cs!=null){const sk=String(c.currentStageKey),st=ENG.DB.stages[sk];if(st&&cs>5&&cs<900){clearStore[sk]={hp:st.totalHP,waves:st.waves,clearSec:cs};try{localStorage.setItem('tbh_clearmodel',JSON.stringify(clearStore))}catch(e){}}}
- const rec=ENG.recommend(psd,{goldPerSec:gps!=null?gps:undefined,expPerSec:eps!=null?eps:undefined,clearSec:cs!=null?cs:undefined,clearSamples:Object.values(clearStore),elapsedSec:0});
+ const rec=ENG.recommend(psd,{goldPerSec:gps!=null?gps:undefined,expPerSec:eps!=null?eps:undefined,clearSec:cs!=null?cs:undefined,clearSamples:Object.values(clearStore),elapsedSec:0});rec.__pt=Math.round(c.playTime||0);histPut(rec);
  render(rec,{gold:ENG.gold(psd),goldPerHour:gps!=null?Math.round(gps*3600):null,playTimeH:+(c.playTime/3600).toFixed(1),version:c.version});setLive(true);return true;
 }catch(e){if(e&&(e.name==='NotAllowedError'||e.name==='SecurityError')){setLive(false);openGate('reconnect');stopPoll();}
  else{$('banner').classList.add('show');$('banner').textContent=' '+t('decrypt_fail',String(e&&e.message||e));}return false;}}
@@ -521,7 +653,7 @@ async function connect(){$('gerr').textContent='';try{if(!window.showOpenFilePic
 async function reconnect(){try{if((await handle.requestPermission({mode:'read'}))==='granted')start();else $('gerr').textContent=t('perm_denied');}catch(e){$('gerr').textContent=String(e.message||e);}}
 function openGate(mode){$('gate').classList.remove('hide');$('stage').classList.add('locked');$('connectBtn').textContent=mode==='reconnect'?t('reconnect'):t('connect');$('gateMsg').textContent=mode==='reconnect'?t('gate_reconnect'):t('gate_pick');$('connectBtn').onclick=mode==='reconnect'?reconnect:connect;}
 
-function showDemo(){const d=window.TBH_DEMO;if(!d)return;$('gate').classList.add('hide');$('stage').classList.remove('locked');$('connTxt').textContent=t('demo_mode');render(d.rec,{gold:d.meta.gold,goldPerHour:d.meta.goldPerHour,playTimeH:d.meta.playTimeH,version:d.meta.version});}
+function showDemo(){const d=window.TBH_DEMO;if(!d)return;demoMode=true;PSD=null;$('gate').classList.add('hide');$('stage').classList.remove('locked');$('connTxt').textContent=t('demo_mode');render(d.rec,{gold:d.meta.gold,goldPerHour:d.meta.goldPerHour,playTimeH:d.meta.playTimeH,version:d.meta.version});}
 $('demoBtn').onclick=showDemo;
 const sel=$('lang');sel.innerHTML=I18N.LOCALES.map(([c,n])=>`<option value="${c}"${c===LOC?' selected':''}>${n}</option>`).join('');
 sel.onchange=()=>{LOC=sel.value;localStorage.setItem('tbh_loc',LOC);document.documentElement.lang=LOC;treeBuilt=false;if(lastRec)render(lastRec,lastMeta);if(!$('gate').classList.contains('hide'))openGate(handle?'reconnect':'pick');};
