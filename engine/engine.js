@@ -16,7 +16,7 @@
  BASIC_ATTACK_MULT: 1.9,
 
  OFFLINE_CAP_SECONDS: 28800,
- T_WAVE: 5.1, T_FIXED: 1.0,
+ T_WAVE: 5.1, T_FIXED: 1.0, CLEAR_DUTY: 0.65,
  CLEAR_CAP: 90,
  LEVEL_TOLERANCE: 2,
  ALMOST_FREE_SECONDS: 10,
@@ -288,7 +288,8 @@
  const mct = (curStage.gold * goldMult) / mgps;
  Dcal = curStage.totalHP / Math.max(0.1, mct - ovh(curStage.waves)); calibrated = true; calSource = 'rate';
  }
- const ct = s => PARAMS.T_FIXED + tWave * s.waves + s.totalHP / Dcal;
+ const dutyMul = (calSource === 'fit' || calSource === 'clears') ? 1 / PARAMS.CLEAR_DUTY : 1;
+ const ct = s => (PARAMS.T_FIXED + tWave * s.waves + s.totalHP / Dcal) * dutyMul;
  if (calibrated && curStage) {
  const cc = ct(curStage);
  if (mgps > 0 && curStage.gold > 0) goldMult = (mgps * cc) / curStage.gold;
