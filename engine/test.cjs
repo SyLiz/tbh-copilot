@@ -4,8 +4,15 @@ const fs = require('fs');
 const path = require('path');
 const E = require('./engine.js');
 
-const snap = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'runtime', 'save_snapshot.json'), 'utf8'));
+// Prefer the live snapshot (local dev); fall back to the committed fixture (CI / clean clone).
+// Both hold the SAME save state — regen the fixture via build_fixture.cjs whenever the
+// snapshot (and these expectations) are refreshed.
+const livePath = path.join(__dirname, '..', 'runtime', 'save_snapshot.json');
+const fixturePath = path.join(__dirname, 'fixtures', 'save_fixture.json');
+const savePath = fs.existsSync(livePath) ? livePath : fixturePath;
+const snap = JSON.parse(fs.readFileSync(savePath, 'utf8'));
 const psd = E.parseSave(snap.PlayerSaveData.value);
+console.log(`save source: ${path.relative(path.join(__dirname, '..'), savePath)}`);
 
 let pass = 0, fail = 0;
 const approx = (got, want, tolPct, label) => {
