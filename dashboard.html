@@ -660,7 +660,7 @@ function catOf(st){st=st||'';
  if(/Inventory|Stash/.test(st))return'inv';
  return'util';}
 let curRuneCat='almostfree';
-let goldThr=null,goldThrManual=false,CUMCOST={},goldMin=2000,goldMax=1000000;
+let goldThr=null,goldThrManual=false,CUMCOST={},BUYCOST={},goldMin=2000,goldMax=1000000;
 function renderRecommend(rec){
  const pt=LOC.startsWith('pt');
  $('tReco').textContent=pt?'RECOMENDAR · o que você quer agora':'RECOMMEND · what you want now';
@@ -698,24 +698,29 @@ function computeCumCost(rt){const nodes=rt.nodes,parents={};for(const[from,to]of
  const ownd=k=>{const n=nodes[k];return n&&(n.status==='owned'||n.status==='maxed');};const memo={};
  function cum(k){if(memo[k]!==undefined)return memo[k];const n=nodes[k];if(!n)return Infinity;if(ownd(k))return memo[k]=0;memo[k]=Infinity;const own=(n.cost||0);const ps=parents[k]||[];const pc=ps.length?Math.min(...ps.map(p=>cum(p))):0;return memo[k]=own+pc;}
  for(const k in nodes)cum(k);CUMCOST=memo;
- const fin=Object.values(memo).filter(v=>isFinite(v)&&v>0);
+ // BUYCOST = what buying the node's NEXT level costs today: an owned rune below max is
+ // its next-level cost (n.cost), a new node is the full unlock path. Maxed buys nothing.
+ BUYCOST={};for(const k in nodes){const n=nodes[k];BUYCOST[k]=n.status==='maxed'?Infinity:((n.status==='owned')?(n.cost!=null?n.cost:Infinity):memo[k]);}
+ const fin=Object.values(BUYCOST).filter(v=>isFinite(v)&&v>0);
  goldMin=fin.length?Math.min(...fin):1000;goldMax=fin.length?Math.max(...fin):1e6;if(goldMax<=goldMin)goldMax=goldMin*4;}
 function roundNice(v){if(!(v>0))return v;const m=Math.pow(10,Math.max(0,Math.floor(Math.log10(v))-1));return Math.round(v/m)*m;}
 function goldFromPos(pos){if(pos>=1000)return null;const lo=Math.log(goldMin),hi=Math.log(goldMax);return roundNice(Math.exp(lo+(pos/1000)*(hi-lo)));}
 function posFromGold(g){if(g==null)return 1000;const lo=Math.log(goldMin),hi=Math.log(goldMax),gg=Math.max(goldMin,Math.min(goldMax,g));return Math.round(1000*(Math.log(gg)-lo)/(hi-lo));}
-function affordCount(){let c=0;for(const k in CUMCOST){const v=CUMCOST[k];if(v>0&&isFinite(v)&&v<=goldThr)c++;}return c;}
+function affordCount(){let c=0;for(const k in BUYCOST){const v=BUYCOST[k];if(v>0&&isFinite(v)&&v<=goldThr)c++;}return c;}
 function syncGoldSlider(skipNum){const v=$('gslVal');if(!v)return;const p=$('gslPre');if(p)p.textContent=t('gsl_pre');if(!skipNum){const num=$('gslNum');if(num)num.value=goldThr==null?'':goldThr;}v.textContent=goldThr==null?t('gsl_off'):(affordCount()+' '+t('gsl_n'));}
-function applyGoldDefault(nodes){if(goldThrManual)return;let min=Infinity;for(const k in CUMCOST){const v=CUMCOST[k],n=nodes&&nodes[k];if(n&&v>0&&isFinite(v)&&!(n.status==='owned'||n.status==='maxed')&&v<min)min=v;}goldThr=isFinite(min)?min:null;if($('gslRange'))$('gslRange').value=posFromGold(goldThr);}
+// default the gold filter to the cheapest purchasable thing: a new node OR the next level of an owned rune
+function applyGoldDefault(nodes){if(goldThrManual)return;let min=Infinity;for(const k in BUYCOST){const v=BUYCOST[k];if(v>0&&isFinite(v)&&v<min)min=v;}goldThr=isFinite(min)?min:null;if($('gslRange'))$('gslRange').value=posFromGold(goldThr);}
 function applyTreeFilters(){const svg=$('tree');if(!svg||!lastRec||!lastRec.runeTree)return;const nodes=lastRec.runeTree.nodes;
  if(goldThr==null){applyCatFilter();return;}
- svg.querySelectorAll('.tnode').forEach(g=>{const n=nodes[g.dataset.key];if(!n)return;const owned=(n.status==='owned'||n.status==='maxed');g.classList.toggle('fade',owned||((CUMCOST[g.dataset.key]||Infinity)>goldThr));});}
+ svg.querySelectorAll('.tnode').forEach(g=>{const n=nodes[g.dataset.key];if(!n)return;g.classList.toggle('fade',n.status==='maxed'||((BUYCOST[g.dataset.key]||Infinity)>goldThr));});}
 function renderRunes(rec){
  const pt=LOC.startsWith('pt');
  renderRecommend(rec);
  $('legend').innerHTML=RCATS.map(c=>`<span><i style="background:${RCOLOR[c]}"></i>${RLAB[c]}</span>`).join('')+
  ` &nbsp; <span><i style="background:transparent;border-radius:50%;box-shadow:0 0 5px #fff,0 0 0 2px #fff"></i>${pt?'recomendada':'recommended'}</span>`+
  `<span><i style="background:transparent;border-radius:50%;box-shadow:0 0 0 2px var(--gold)"></i> ${pt?'quase grátis':'almost free'}</span>`+
- `<span><i style="background:#fff;border-radius:50%"></i>${pt?'já tem':'owned'}</span>`+
+ `<span><i style="background:#fff;border-radius:50%"></i>${pt?'completa':'maxed'}</span>`+
+ `<span><i style="background:transparent;border-radius:50%;border:2px dashed #fff;box-sizing:border-box"></i>${pt?'tem, dá pra upar':'owned, can level'}</span>`+
  `<span><i style="background:#fff;opacity:.12;border-radius:50%"></i>${pt?'bloqueada':'locked'}</span>`;
  if(curTab==='runes'){drawTree(rec.runeTree);applyGoldDefault(rec.runeTree.nodes);syncGoldSlider();applyTreeFilters();}
 }
@@ -725,7 +730,8 @@ function statusStroke(n){
  const col=RCOLOR[catOf(n.st)]||'#67769b';
  if(n.status==='recommended')return{stroke:col,w:5,glow:'#ffffff'};
  if(n.status==='almostfree')return{stroke:col,w:5,glow:'#f6c552'};
- if(n.status==='owned'||n.status==='maxed')return{stroke:col,w:4,glow:null};
+ if(n.status==='maxed')return{stroke:col,w:4,glow:null};
+ if(n.status==='owned')return{stroke:col,w:4,glow:null,dash:'7 5'};// dashed = owned but still levelable
  if(n.status==='skip')return{stroke:'var(--dim)',w:2,glow:null};
  return{stroke:col,w:2,glow:null};
 }
@@ -739,9 +745,9 @@ function buildTree(rt){
  edges+=`<line class="tree-edge ${hot?'hot':''}" x1="${a.x}" y1="${a.y}" x2="${c.x}" y2="${c.y}"/>`;}
  for(const[key,n]of Object.entries(rt.nodes)){
  const st=statusStroke(n),ic=runeIcon(key);
- const lvb=(n.level>0)?`<text class="lvb" x="16" y="40" text-anchor="middle">${n.level}</text>`:'';
+ const lvb=(n.level>0)?`<text class="lvb" x="16" y="40" text-anchor="middle">${n.level}${n.level<n.max?'/'+n.max:''}</text>`:'';
  const cls='tnode'+(n.status==='locked'?' locked':'')+(n.status==='skip'?' dim':'');
- nodes+=`<g class="${cls}" data-key="${key}" transform="translate(${n.x-16},${n.y-16})"><circle class="ring" cx="16" cy="16" r="17" style="stroke:${st.stroke};stroke-width:${st.w}${st.glow?';filter:drop-shadow(0 0 5px '+st.glow+')':''}"/>
+ nodes+=`<g class="${cls}" data-key="${key}" transform="translate(${n.x-16},${n.y-16})"><circle class="ring" cx="16" cy="16" r="17" style="stroke:${st.stroke};stroke-width:${st.w}${st.dash?';stroke-dasharray:'+st.dash:''}${st.glow?';filter:drop-shadow(0 0 5px '+st.glow+')':''}"/>
  ${ic?`<image href="${ic}" x="1" y="1" width="30" height="30"/>`:''}${lvb}</g>`;
  }
  svg.innerHTML=`<g id="treeG">${edges}${nodes}</g>`;
@@ -752,9 +758,9 @@ function buildTree(rt){
 }
 function updateTreeColors(rt){
  const svg=$('tree');svg.querySelectorAll('.tnode').forEach(g=>{const n=rt.nodes[g.dataset.key];if(!n)return;
- const st=statusStroke(n),ring=g.querySelector('.ring');ring.style.stroke=st.stroke;ring.style.strokeWidth=st.w;ring.style.filter=st.glow?('drop-shadow(0 0 5px '+st.glow+')'):'none';
+ const st=statusStroke(n),ring=g.querySelector('.ring');ring.style.stroke=st.stroke;ring.style.strokeWidth=st.w;ring.style.strokeDasharray=st.dash||'none';ring.style.filter=st.glow?('drop-shadow(0 0 5px '+st.glow+')'):'none';
  g.classList.toggle('locked',n.status==='locked');g.classList.toggle('dim',n.status==='skip');
- let txt=g.querySelector('.lvb');if(n.level>0){if(!txt){txt=document.createElementNS('http://www.w3.org/2000/svg','text');txt.setAttribute('class','lvb');txt.setAttribute('x',16);txt.setAttribute('y',40);txt.setAttribute('text-anchor','middle');g.appendChild(txt);}txt.textContent=n.level;}else if(txt)txt.remove();});
+ let txt=g.querySelector('.lvb');if(n.level>0){if(!txt){txt=document.createElementNS('http://www.w3.org/2000/svg','text');txt.setAttribute('class','lvb');txt.setAttribute('x',16);txt.setAttribute('y',40);txt.setAttribute('text-anchor','middle');g.appendChild(txt);}txt.textContent=n.level+(n.level<n.max?'/'+n.max:'');}else if(txt)txt.remove();});
 }
 function drawTree(rt){if(!rt)return;if(!treeBuilt)buildTree(rt);else updateTreeColors(rt);computeCumCost(rt);}
 function showNode(n,key){if(!n)return;const d=$('tdetail');

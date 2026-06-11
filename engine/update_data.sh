@@ -18,7 +18,7 @@ for t in $SUB; do get "$BASE/t/$t.json" "$W/t/$t.json"; done
 echo "downloaded OK=$ok FAIL=$fail"
 
 WIKI_V=$(grep -o '"version"[^,]*' "$W/manifest.json" 2>/dev/null | head -1 | grep -o '[0-9.]*' | head -1)
-SAVE="C:/Users/$USER/AppData/LocalLow/TesseractStudio/TaskbarHero/Version.txt"
+SAVE="C:/Users/${USER:-${USERNAME:-}}/AppData/LocalLow/TesseractStudio/TaskbarHero/Version.txt"
 INSTALL_V=$(cat "C:/Program Files (x86)/Steam/steamapps/common/TaskbarHero/Version.txt" 2>/dev/null | tr -d '\r\n ')
 echo "wiki version: ${WIKI_V:-?}  | installed game: ${INSTALL_V:-?}"
 [ -n "$WIKI_V" ] && [ -n "$INSTALL_V" ] && [ "$WIKI_V" != "$INSTALL_V" ] && \
