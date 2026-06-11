@@ -7,25 +7,30 @@
  if (!DB) throw new Error('TBH_DB not loaded (include engine/gamedata.js before engine.js)');
 
  const PARAMS = {
-
+ // From the decompiled binary via wiki/mechanics (HIGH confidence):
  MITIG_CAP: 0.75, ARMOR_PIERCE: 0.4,
  CRITDMG_DIVISOR: 1000,
-
  PERCENT_DIVISOR: 1000,
-
  BASIC_ATTACK_MULT: 1.9,
-
  OFFLINE_CAP_SECONDS: 28800,
- T_WAVE: 5.1, T_FIXED: 1.0, CLEAR_DUTY: 0.65,
- CLEAR_CAP: 90,
- LEVEL_TOLERANCE: 2,
- ALMOST_FREE_FRACTION: 0.1,
- SAFE_DANGER: 0.6,
- DANGER_TOL: 1.15,
- SKILL_SCALE: 1.0,
+ // Clear-time priors, empirically tuned against measured stage clears (2026-06; the
+ // docs' first estimate was 1.2/2.0). Only the *ranking* depends weakly on them — live
+ // calibration (clearSamples/clearSec) replaces them whenever the player has data.
+ T_WAVE: 5.1, T_FIXED: 1.0,
+ CLEAR_DUTY: 0.65, // fraction of wall-clock actually spent clearing; matches sustained rates
+ CLEAR_CAP: 90, // soft kill-speed cap (s) so one-shot stages don't divide by ~0
+ ALMOST_FREE_FRACTION: 0.1, // a rune is "almost free" if it costs <=10% of the gold balance
+ SAFE_DANGER: 0.6, DANGER_TOL: 1.15, // survival-margin bands (comfortable / tight)
+ SKILL_SCALE: 1.0, // labeled estimate: active-skill damage assumed proportional to AD
  SLOT_TYPES: [null, null, 'HELMET', 'ARMOR', 'GLOVES', 'BOOTS', 'AMULET', 'EARING', 'RING', 'BRACER'],
  };
  const GOLD_KEY = 100001;
+ // Rune keys that grant OfflineReward{Gold,Exp}Percent / unlock offline rewards, from
+ // data/wiki/runes.json. test.cjs asserts they exist in the DB and grant exactly these
+ // stats, so a game update that renumbers runes fails loudly instead of summing zeros.
+ const OFFLINE_GOLD_RUNES = [110011, 15002, 180201, 180401];
+ const OFFLINE_EXP_RUNES = [110012, 150021, 180301, 180501];
+ const OFFLINE_UNLOCK_RUNE = 11001;
  const BASE_STATS = ['AttackDamage','AttackSpeed','CastSpeed','CriticalChance','CriticalDamage','MaxHp','Armor','MovementSpeed','CooldownReduction'];
  const RUNE_MAP = {
  AllHeroAttackDamage: ['AttackDamage','FLAT'], AllHeroAttackDamagePercent: ['AttackDamage','ADDITIVE'],
@@ -223,6 +228,9 @@
  return iMax < 0 ? true : iS <= iMax + 1;
  }
  function clearTime(s, D) { return (s.totalHP / Math.max(1, D)) + PARAMS.T_WAVE * s.waves + PARAMS.T_FIXED; }
+ // EXP falloff when over-leveled for a stage: logistic curve centered 8 levels above the
+ // stage, slope 2/3 per level. Both values were hand-fit to observed sustained EXP rates
+ // (see the 2026-06 EXP-rate validation); clamped to [0.01, 1].
  function fitFactor(partyLevel, stageLvl) {
  return Math.min(1, Math.max(0.01, 1 / (1 + Math.exp((partyLevel - stageLvl - 8) * (2 / 3)))));
  }
@@ -331,11 +339,11 @@
  let g_ = 0, e_ = 0;
  const rs = Object.fromEntries((psd.RuneSaveData||[]).map(r => [r.RuneKey, r.Level]));
  const sum = (keys, st) => { let v = 0; for (const k of keys) { const lv = rs[k]||0; const rd = DB.runes[k]; if (!lv||!rd) continue; const rl = DB.runeLevels[rd.ldk]; for (let L=1;L<=lv;L++){ const row=rl&&rl[L]; if(row&&row.st===st) v+=row.v||0; } } return v; };
- g_ = sum([110011,15002,180201,180401], 'OfflineRewardGoldPercent');
- e_ = sum([110012,150021,180301,180501], 'OfflineRewardExpPercent');
+ g_ = sum(OFFLINE_GOLD_RUNES, 'OfflineRewardGoldPercent');
+ e_ = sum(OFFLINE_EXP_RUNES, 'OfflineRewardExpPercent');
  return { goldBonus: g_/100, expBonus: e_/100 };
  }
- const offlineUnlocked = psd => ((psd.RuneSaveData||[]).find(r => r.RuneKey === 11001)||{}).Level > 0;
+ const offlineUnlocked = psd => ((psd.RuneSaveData||[]).find(r => r.RuneKey === OFFLINE_UNLOCK_RUNE)||{}).Level > 0;
  function idleInfo(psd, elapsedSec) {
  const sl = stageLevelOf(String(psd.commonSaveData.currentStageKey));
  const row = DB.offlineRewards[sl];
@@ -760,7 +768,8 @@
  xpForecast, petAdvisor, alchemyValue, gearProgression, runeROI, goldPlan, goalPlan, synthesisPlan, forecast,
  collect, aggregate, dps, ehp, power, mitigation,
  runeContrib, gold, party, heroSaveMap, gearStatLines, expToNext, partyExp, totalClears, cumXP, ticksToUnix, stageUnlocked,
- bestParkStage, refStageLevel, refDamage, projectLevel, fitFactor };
+ bestParkStage, refStageLevel, refDamage, projectLevel, fitFactor,
+ OFFLINE_RUNES: { gold: OFFLINE_GOLD_RUNES, exp: OFFLINE_EXP_RUNES, unlock: OFFLINE_UNLOCK_RUNE } };
  g.TBHEngine = API;
  if (typeof module !== 'undefined' && module.exports) module.exports = API;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

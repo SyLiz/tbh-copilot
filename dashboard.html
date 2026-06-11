@@ -314,8 +314,9 @@ async function decryptSave(buf){
  if(out[0]===0x1f&&out[1]===0x8b)out=new Uint8Array(await new Response(new Blob([out]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
  return ENG.parseSave(JSON.parse(new TextDecoder().decode(out)).PlayerSaveData.value);
 }
+const SAMPLE_CAP=400;// rate window: ~13-100min of save polls (2-15s adaptive), enough to smooth idle gaps
 let samples=[],lastStage=null,clearStore={};try{clearStore=JSON.parse(localStorage.getItem('tbh_clearmodel')||'{}')}catch(e){}
-function sampleGold(pt,g,x,c){const l=samples[samples.length-1];if(!l||l.pt!==pt||l.g!==g)samples.push({pt,g,x,c});if(samples.length>400)samples.shift();}
+function sampleGold(pt,g,x,c){const l=samples[samples.length-1];if(!l||l.pt!==pt||l.g!==g)samples.push({pt,g,x,c});if(samples.length>SAMPLE_CAP)samples.shift();}
 function rateOf(f){if(samples.length<2)return null;let gain=0,d=0;for(let i=1;i<samples.length;i++){const dp=samples[i].pt-samples[i-1].pt,dg=(samples[i][f]||0)-(samples[i-1][f]||0);if(dp>0){d+=dp;if(dg>0)gain+=dg;}}return d>0?gain/d:null;}
 function clearSec(){if(samples.length<2)return null;let dc=0,d=0;for(let i=1;i<samples.length;i++){const dp=samples[i].pt-samples[i-1].pt,dcl=(samples[i].c||0)-(samples[i-1].c||0);if(dp>0&&dcl>0){d+=dp;dc+=dcl;}}return dc>0?d/dc:null;}
 let MANUALCAL={};try{MANUALCAL=JSON.parse(localStorage.getItem('tbh_clearcal')||'{}')}catch(e){}
@@ -343,7 +344,9 @@ function slotGearType(heroKey,slot){
 }
 const PROXIES=[u=>'https://corsproxy.io/?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(u),u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u)];
 let priceCache={};try{priceCache=JSON.parse(localStorage.getItem('tbh_prices')||'{}')}catch(e){}
-const PRICE_TTL=21600000,TRADE_GRADES=['Legendary','Immortal','Arcana','Beyond','Celestial','Divine','Cosmic'];
+const PRICE_TTL=6*60*60*1000;// cache Steam prices 6h: they move slowly and the proxies rate-limit hard
+const MKT_DELAY=600;// ms between priceoverview calls so Steam doesn't throttle the proxy IP
+const TRADE_GRADES=['Legendary','Immortal','Arcana','Beyond','Celestial','Divine','Cosmic'];
 function gearHash(key){const nm=(window.TBH_GEARNAMES||{})[key];if(!nm)return null;const gr=(DB.items[String(key)]||{}).grade;if(!gr)return null;const g=gr.charAt(0)+gr.slice(1).toLowerCase();return TRADE_GRADES.includes(g)?{name:nm,grade:g}:null;}
 function steamLink(hash){return 'https://steamcommunity.com/market/listings/3678970/'+encodeURIComponent(hash);}
 let mktDown=false;
@@ -354,7 +357,7 @@ async function getGearPrice(key){const gh=gearHash(key);if(!gh)return null;const
 const MKT_SVG='<svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM5.2 5l1.1 6.8c.1.6.6 1 1.2 1h9c.6 0 1.1-.4 1.2-1L20 7H6.4l-.3-2H3V3h3.6c.5 0 .9.4 1 .9L7.6 5H5.2z"/></svg>';
 function mktHtml(p){return '<a class="mktl" href="'+steamLink(p.hash)+'" target="_blank" rel="noopener">'+MKT_SVG+p.price+' <span>Steam →</span></a>';}
 function gearMkt(key){const gh=gearHash(key);if(!gh)return '';return '<a class="mktl lk" href="https://steamcommunity.com/market/search?appid=3678970&q='+encodeURIComponent(gh.name+' ('+gh.grade+')')+'" target="_blank" rel="noopener">'+MKT_SVG+'<span>Steam →</span></a>';}
-async function loadGearPrices(){const els=[...document.querySelectorAll('#wfCands .cmkt')].filter(e=>e.dataset.pk&&!e.dataset.done).slice(0,6);const groups={};for(const el of els){el.dataset.done='1';const gh=gearHash(+el.dataset.pk);if(!gh)continue;const ck=gh.name+'|'+gh.grade;(groups[ck]=groups[ck]||{pk:+el.dataset.pk,els:[]}).els.push(el);}const inj=(g,p)=>{if(p&&p.price)g.els.forEach(e=>e.innerHTML=mktHtml(p));};for(const ck in groups){const c=priceCache[ck];if(c&&Date.now()-c.t<PRICE_TTL){inj(groups[ck],c);continue;}try{inj(groups[ck],await getGearPrice(groups[ck].pk));}catch(e){}await new Promise(r=>setTimeout(r,600));}}
+async function loadGearPrices(){const els=[...document.querySelectorAll('#wfCands .cmkt')].filter(e=>e.dataset.pk&&!e.dataset.done).slice(0,6);const groups={};for(const el of els){el.dataset.done='1';const gh=gearHash(+el.dataset.pk);if(!gh)continue;const ck=gh.name+'|'+gh.grade;(groups[ck]=groups[ck]||{pk:+el.dataset.pk,els:[]}).els.push(el);}const inj=(g,p)=>{if(p&&p.price)g.els.forEach(e=>e.innerHTML=mktHtml(p));};for(const ck in groups){const c=priceCache[ck];if(c&&Date.now()-c.t<PRICE_TTL){inj(groups[ck],c);continue;}try{inj(groups[ck],await getGearPrice(groups[ck].pk));}catch(e){}await new Promise(r=>setTimeout(r,MKT_DELAY));}}
 let gearSellOnly=false;try{gearSellOnly=localStorage.getItem('tbh_sellonly')==='1'}catch(e){}
 const GRADE_RANK={COMMON:0,UNCOMMON:1,RARE:2,LEGENDARY:3,IMMORTAL:4,ARCANA:5,BEYOND:6,CELESTIAL:7,DIVINE:8,COSMIC:9};
 const STRONGEST=(()=>{const best={};for(const k in DB.items){const it=DB.items[k];if(it.type!=='GEAR'||!it.gt)continue;const r=(GRADE_RANK[it.grade]||0)*1000+(it.lvl||0);if(!best[it.gt]||r>best[it.gt].r)best[it.gt]={k:k,r:r};}const m={};for(const g in best)m[g]=best[g].k;return m;})();
@@ -366,7 +369,7 @@ async function getMatPrice(name){const ck='M|'+name,c=priceCache[ck];if(c&&Date.
 function matLink(n){return 'https://steamcommunity.com/market/listings/3678970/'+encodeURIComponent(n);}
 function rsSlotLbl(s){return s==='All slots'?t('rs_allslots'):t('rs_slot_'+s.toLowerCase());}
 function rsTotal(){const el=$('rsTotal');if(!el)return;const M=window.TBH_MATFX||[];let sum=0,sym='$',miss=0;for(const k of rsCart){const m=M.find(x=>String(x.key)===String(k));if(!m)continue;const c=priceCache['M|'+m.name];if(c&&c.price){const n=parseFloat(c.price.replace(/[^0-9.]/g,''));if(isFinite(n))sum+=n;const sm=c.price.match(/[^\d.,\s]+/);if(sm)sym=sm[0];}else miss++;}el.innerHTML=t('rs_total')+': <b>'+sym+sum.toFixed(2)+'</b>'+(miss?` <span class="rsnp">${t('rs_missing',miss)}</span>`:'');}
-async function loadMatPrices(){const all=[...document.querySelectorAll('#pane-research [data-mk]')];const cartN=[...new Set([...document.querySelectorAll('#pane-research .rscp[data-mk]')].map(e=>e.dataset.mk))];const listN=[...new Set([...document.querySelectorAll('#pane-research .rsmkt[data-mk]')].map(e=>e.dataset.mk))].slice(0,10);const names=[...new Set([...cartN,...listN])];for(const name of names){let p=priceCache['M|'+name];if(!(p&&Date.now()-p.t<PRICE_TTL)){try{p=await getMatPrice(name)}catch(e){p=null}await new Promise(r=>setTimeout(r,600));}for(const e of all.filter(x=>x.dataset.mk===name)){const cart=e.classList.contains('rscp');
+async function loadMatPrices(){const all=[...document.querySelectorAll('#pane-research [data-mk]')];const cartN=[...new Set([...document.querySelectorAll('#pane-research .rscp[data-mk]')].map(e=>e.dataset.mk))];const listN=[...new Set([...document.querySelectorAll('#pane-research .rsmkt[data-mk]')].map(e=>e.dataset.mk))].slice(0,10);const names=[...new Set([...cartN,...listN])];for(const name of names){let p=priceCache['M|'+name];if(!(p&&Date.now()-p.t<PRICE_TTL)){try{p=await getMatPrice(name)}catch(e){p=null}await new Promise(r=>setTimeout(r,MKT_DELAY));}for(const e of all.filter(x=>x.dataset.mk===name)){const cart=e.classList.contains('rscp');
  if(p&&p.price){e.title='';if(cart)e.textContent=p.price;else e.innerHTML=`<a class="mktl" href="${matLink(name)}" target="_blank" rel="noopener">${MKT_SVG}${p.price}</a>`;}
  else if(p&&!p.fail){e.title=t('mkt_nolist');if(cart)e.textContent='—';else e.innerHTML='<span class="rsnp">—</span>';}
  else{e.title=t('mkt_down');if(cart)e.textContent='?';else e.innerHTML='<span class="rsnp">?</span>';}}rsTotal();}rsTotal();}
@@ -760,6 +763,7 @@ function tween(el,to){if(to==null){el.textContent='—';return;}const f=tw[el.id
 const idb=()=>new Promise((res,rej)=>{const r=indexedDB.open('tbh',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});
 async function idbSet(k,v){const db=await idb();return new Promise((res,rej)=>{const x=db.transaction('kv','readwrite');x.objectStore('kv').put(v,k);x.oncomplete=()=>res();x.onerror=()=>rej(x.error);});}
 async function idbGet(k){const db=await idb();return new Promise((res,rej)=>{const x=db.transaction('kv','readonly'),q=x.objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
+const CLEAR_SEC_MIN=5,CLEAR_SEC_MAX=900;
 let handle=null,lastMtime=-1,timer=null,pollMs=2000,lastFileTime=0,toastTimer=null;
 function showToast(html){const el=$('toast');if(!el)return;el.innerHTML=html;el.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),4200);}
 function refreshToast(){let tm='—';try{tm=new Date(lastFileTime).toLocaleTimeString(LOC,{hour:'2-digit',minute:'2-digit',second:'2-digit'});}catch(e){}showToast(`<b>${t('refreshed')}</b> · ${t('refresh_savedat',tm)}<div class="t2">${t('refresh_nosync')}</div>`);}
@@ -769,7 +773,8 @@ async function processSaveBuffer(buffer){
  if(c.currentStageKey!==lastStage){samples=[];lastStage=c.currentStageKey;}
  sampleGold(Math.round(c.playTime),ENG.gold(psd),ENG.partyExp(psd),ENG.totalClears(psd));
  const gps=goldPerSec(),eps=expPerSec(),cs=clearSec();
- if(cs!=null){const sk=String(c.currentStageKey),st=ENG.DB.stages[sk];if(st&&cs>5&&cs<900){clearStore[sk]={hp:st.totalHP,waves:st.waves,clearSec:cs};try{localStorage.setItem('tbh_clearmodel',JSON.stringify(clearStore))}catch(e){}}}
+ // 5s-15min sanity bounds for one stage clear: outside that it's an idle gap or a stage switch, not a clear
+ if(cs!=null){const sk=String(c.currentStageKey),st=ENG.DB.stages[sk];if(st&&cs>CLEAR_SEC_MIN&&cs<CLEAR_SEC_MAX){clearStore[sk]={hp:st.totalHP,waves:st.waves,clearSec:cs};try{localStorage.setItem('tbh_clearmodel',JSON.stringify(clearStore))}catch(e){}}}
  lastGps=gps;lastEps=eps;lastCs=cs;lastMeta={gold:ENG.gold(psd),goldPerHour:gps!=null?Math.round(gps*3600):null,playTimeH:+(c.playTime/3600).toFixed(1),version:c.version};
  const rec=ENG.recommend(psd,{goldPerSec:gps!=null?gps:undefined,expPerSec:eps!=null?eps:undefined,clearSec:manualOn()?undefined:(cs!=null?cs:undefined),clearSamples:calSamples(),elapsedSec:0});rec.__pt=Math.round(c.playTime||0);histPut(rec);
  render(rec,lastMeta);setLive(true);

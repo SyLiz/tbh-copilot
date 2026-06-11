@@ -128,6 +128,14 @@ ok(r.heroes.every(h => typeof h.skillDpsEst === 'number'), 'per-hero skill-DPS e
 ok(byHero[201].skillDpsEst < byHero[201].dps, 'skill-DPS is a minor add vs the carry auto-attack (kept separate)');
 ok(typeof r.meta.partySkillDps === 'number', 'party skill-DPS total in meta');
 
+console.log('\n-- data integrity (hardcoded keys vs DB) --');
+const grantsOf = k => { const rd = E.DB.runes[k]; const rl = rd && E.DB.runeLevels[rd.ldk]; return rl ? Object.values(rl).filter(Boolean).map(x => x.st) : []; };
+for (const [keys, st] of [[E.OFFLINE_RUNES.gold, 'OfflineRewardGoldPercent'], [E.OFFLINE_RUNES.exp, 'OfflineRewardExpPercent']]) {
+ ok(keys.every(k => E.DB.runes[k]), `${st} rune keys all exist in the DB`);
+ ok(keys.every(k => grantsOf(k).includes(st)), `${st} rune keys all grant that stat`);
+}
+ok(grantsOf(E.OFFLINE_RUNES.unlock).includes('UnlockOfflineReward'), 'offline unlock rune key grants UnlockOfflineReward');
+
 console.log('\n-- power delta (gear) --');
 const rangerSave = psd.heroSaveDatas.find(h => h.heroKey === 201);
 const d = E.powerDelta(rangerSave, psd, 0, 314141);
