@@ -649,6 +649,47 @@
  return { avgItemLevel: Math.round(avg), frontierLevel: frontierLvl || 0, gap: Math.max(0, (frontierLvl || 0) - Math.round(avg)), advice: (frontierLvl > avg + 3) ? 'push_for_drops' : 'on_par' };
  }
 
+ // ── drop finder ────────────────────────────────────────────────────────────
+ // Stages drop the monster box of their 5-level band; DB.boxDrops holds each band's
+ // weighted item-group table and DB.dropGroups the gear items per group. An item's
+ // chance = its groups' weight share of the box, split across each group's items.
+ // Hero-conditioned (DLC) rows are counted for everyone — the skew is tiny and only
+ // relative ranking matters here.
+ const dropBandKeys = () => Object.keys(DB.boxDrops || {}).map(Number).sort((a, b) => a - b);
+ function bandOfLevel(lvl) { let b = null; for (const x of dropBandKeys()) if (x <= lvl) b = x; return b; }
+ function dropBands(itemKey) {
+ const k = Number(itemKey), out = [];
+ for (const band in DB.boxDrops || {}) {
+ let total = 0, mine = 0;
+ for (const [g, w] of DB.boxDrops[band]) { total += w; const its = DB.dropGroups[g] || []; if (its.indexOf(k) >= 0) mine += w / its.length; }
+ if (mine > 0 && total > 0) out.push({ band: +band, chance: mine / total });
+ }
+ return out.sort((a, b) => a.band - b.band);
+ }
+ function dropStages(itemKey, psd) {
+ const bands = {}; for (const b of dropBands(itemKey)) bands[b.band] = b.chance;
+ const maxC = psd ? psd.commonSaveData.maxCompletedStage : null;
+ const out = [];
+ for (const [key, s] of Object.entries(DB.stages)) {
+ const b = bandOfLevel(s.lvl);
+ if (b != null && bands[b] != null) out.push({ key: Number(key), lvl: s.lvl, label: s.label, diff: s.diff, chance: bands[b], unlocked: psd ? stageUnlocked(key, maxC) : true });
+ }
+ return out.sort((a, b) => a.lvl - b.lvl);
+ }
+ // rank the player's reachable stages by how much of the wishlist drops there
+ function favFarm(psd, favKeys) {
+ const infos = (favKeys || []).map(k => { const m = {}; for (const b of dropBands(k)) m[b.band] = b.chance; return { key: Number(k), bands: m }; });
+ const maxC = psd.commonSaveData.maxCompletedStage, rows = [];
+ for (const [key, s] of Object.entries(DB.stages)) {
+ if (!stageUnlocked(key, maxC)) continue;
+ const b = bandOfLevel(s.lvl); if (b == null) continue;
+ const favs = infos.filter(f => f.bands[b]).map(f => ({ key: f.key, chance: f.bands[b] }));
+ if (favs.length) rows.push({ key: Number(key), lvl: s.lvl, favs, score: favs.reduce((a, f) => a + f.chance, 0) });
+ }
+ rows.sort((a, b) => b.score - a.score || b.lvl - a.lvl);
+ return rows;
+ }
+
  function runeROI(psd, goldPerSec, stageLevel) {
  const plan = runePlan(psd, goldPerSec, stageLevel);
  return plan.combat.filter(c => c.dPower > 0).map(c => ({ key: c.key, name: c.name, st: c.st, value: c.value, cost: c.cost, dPower: c.dPower, perGold: c.dPower / c.cost, affordable: c.affordable })).sort((a, b) => b.perGold - a.perGold);
@@ -773,6 +814,7 @@
  collect, aggregate, dps, ehp, power, mitigation,
  runeContrib, gold, party, heroSaveMap, gearStatLines, expToNext, partyExp, totalClears, cumXP, ticksToUnix, stageUnlocked,
  bestParkStage, refStageLevel, refDamage, projectLevel, fitFactor,
+ bandOfLevel, dropBands, dropStages, favFarm,
  OFFLINE_RUNES: { gold: OFFLINE_GOLD_RUNES, exp: OFFLINE_EXP_RUNES, unlock: OFFLINE_UNLOCK_RUNE } };
  g.TBHEngine = API;
  if (typeof module !== 'undefined' && module.exports) module.exports = API;

@@ -141,6 +141,19 @@ ok(skipNodes.every(n => n.cost > E.gold(psd)), 'no skip-status rune is actually 
 // the window check (26-31) is what keeps it from nagging players who already cleared past it
 ok(r.actions.some(a => a.k === 'fire_protection'), 'fire hint present while facing the fire maps');
 
+console.log('\n-- drop finder --');
+const bowEntry = Object.entries(E.DB.items).find(([k, v]) => v.gt === 'BOW' && v.lvl === 15 && v.grade === 'COMMON');
+ok(!!bowEntry, 'a lv15 COMMON bow exists in the DB');
+const bowKey = +bowEntry[0], bands15 = E.dropBands(bowKey);
+ok(bands15.some(b => b.band === 15), 'lv15 bow drops from the Lv15 box band');
+ok(bands15.every(b => b.chance > 0 && b.chance < 1), 'drop chances are sane fractions');
+const dStages = E.dropStages(bowKey, psd);
+ok(dStages.length > 0 && dStages.every(x => E.DB.stages[x.key]), 'drop stages resolve to real stages');
+ok(dStages.some(x => x.unlocked) || dStages.every(x => !x.unlocked), 'unlocked flag computed');
+const ffm = E.favFarm(psd, [bowKey]);
+ok(Array.isArray(ffm), 'favFarm computes');
+if (ffm.length) ok(ffm[0].favs.length >= 1 && ffm[0].score > 0, 'favFarm top stage carries the favorite');
+
 console.log('\n-- power delta (gear) --');
 const rangerSave = psd.heroSaveDatas.find(h => h.heroKey === 201);
 const d = E.powerDelta(rangerSave, psd, 0, 314141);

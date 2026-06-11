@@ -577,6 +577,21 @@
  };
  for (const l in THEME) { UI[l] = Object.assign(UI[l] || {}, THEME[l]); }
 
+ // Drop finder: gear favorites + where-it-drops + the wishlist farm card
+ const DROPS = {
+ 'en-US': { fav_tip: 'favorite — rank farm stages by where this drops', drops_at: 'drops at', drops_none: 'not a stage drop (synthesis/market only)', drops_locked: 'no unlocked stage drops it yet', fav_best: 'BEST FOR YOUR ★', fav_box: 'per box', fav_sort: 'sort by your ★ favorites' },
+ 'pt-BR': { fav_tip: 'favoritar — ranqueia os estágios de farm por onde isso dropa', drops_at: 'dropa em', drops_none: 'não dropa em estágio (só synthesis/market)', drops_locked: 'nenhum estágio desbloqueado dropa ainda', fav_best: 'MELHOR PROS SEUS ★', fav_box: 'por caixa', fav_sort: 'ordenar pelos seus ★ favoritos' },
+ 'es-ES': { fav_tip: 'favorito — ordena las etapas de farmeo por dónde cae', drops_at: 'cae en', drops_none: 'no cae en etapas (solo síntesis/mercado)', drops_locked: 'ninguna etapa desbloqueada lo suelta aún', fav_best: 'MEJOR PARA TUS ★', fav_box: 'por caja', fav_sort: 'ordenar por tus ★ favoritos' },
+ 'fr-FR': { fav_tip: 'favori — classe les paliers de farm selon où ça tombe', drops_at: 'tombe en', drops_none: 'ne tombe pas en palier (synthèse/marché uniquement)', drops_locked: "aucun palier débloqué ne le fait tomber pour l'instant", fav_best: 'MEILLEUR POUR VOS ★', fav_box: 'par coffre', fav_sort: 'trier selon vos ★ favoris' },
+ 'de-DE': { fav_tip: 'Favorit — sortiert Farm-Stufen danach, wo das droppt', drops_at: 'droppt in', drops_none: 'kein Stufen-Drop (nur Synthese/Markt)', drops_locked: 'noch keine freigeschaltete Stufe droppt es', fav_best: 'BESTE FÜR DEINE ★', fav_box: 'pro Kiste', fav_sort: 'nach deinen ★ Favoriten sortieren' },
+ 'ja-JP': { fav_tip: 'お気に入り — ドロップ場所でファームを並べ替え', drops_at: 'ドロップ:', drops_none: 'ステージドロップなし（合成/マーケットのみ）', drops_locked: '解放済みステージではまだドロップしません', fav_best: '★に最適', fav_box: '箱あたり', fav_sort: '★お気に入りで並べ替え' },
+ 'ko-KR': { fav_tip: '즐겨찾기 — 드롭 위치 기준으로 파밍 정렬', drops_at: '드롭:', drops_none: '스테이지 드롭 없음 (합성/장터 전용)', drops_locked: '해금된 스테이지에서는 아직 드롭되지 않습니다', fav_best: '★에 최적', fav_box: '상자당', fav_sort: '★ 즐겨찾기로 정렬' },
+ 'zh-Hans': { fav_tip: '收藏 — 按掉落地点排序刷图关卡', drops_at: '掉落于', drops_none: '不在关卡掉落（仅合成/市场）', drops_locked: '已解锁的关卡还掉不出它', fav_best: '最适合你的 ★', fav_box: '每箱', fav_sort: '按你的 ★ 收藏排序' },
+ 'zh-Hant': { fav_tip: '收藏 — 按掉落地點排序刷圖關卡', drops_at: '掉落於', drops_none: '不在關卡掉落（僅合成/市場）', drops_locked: '已解鎖的關卡還掉不出它', fav_best: '最適合你的 ★', fav_box: '每箱', fav_sort: '按你的 ★ 收藏排序' },
+ 'ru-RU': { fav_tip: 'избранное — сортирует фарм-этапы по месту дропа', drops_at: 'падает в', drops_none: 'не падает на этапах (только синтез/маркет)', drops_locked: 'пока ни один открытый этап его не даёт', fav_best: 'ЛУЧШЕЕ ДЛЯ ВАШИХ ★', fav_box: 'за сундук', fav_sort: 'сортировать по вашим ★' },
+ };
+ for (const l in DROPS) { UI[l] = Object.assign(UI[l] || {}, DROPS[l]); }
+
  function t(locale, key, vars) {
  const tbl = UI[locale] || UI['en-US'];
  let s = (tbl && tbl[key] != null) ? tbl[key] : (UI['en-US'][key] != null ? UI['en-US'][key] : key);

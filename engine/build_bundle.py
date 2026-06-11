@@ -249,6 +249,31 @@ for r in L('t/synthesis_recipes.json'):
         DB['synthesis'][g] = {'amount': r['MaterialAmount'], 'tier': r['RecipeTier'],
                               'minLvl': r['MinResultLevel'], 'maxLvl': r['MaxResultLevel']}
 
+# ── drop finder: normal monster boxes (one per 5-level band) → weighted item groups ──
+# Monsters drop the STAGEBOX of their stage's level band (item 910LL1 = "Normal Monster
+# Box LvLL"); opening it rolls the drops table (DropKey = boxId*10+1) for an ITEMGROUP,
+# and item_groups lists the concrete items. Rows with HeroKeyCondition only roll when
+# the player owns that (DLC) hero.
+_items = L('items.json')
+band_dk = {}
+for it in _items:
+    if it.get('type') == 'STAGEBOX' and str(it['id']).startswith('910') and len(str(it['id'])) == 6:
+        band_dk[it['id'] * 10 + 1] = int(str(it['id'])[3:5])
+g2items = {}
+for r in L('t/item_groups.json'):
+    g2items.setdefault(r['ItemGroupKey'], []).append(r['ItemKey'])
+gear_ids = {it['id'] for it in _items if it.get('gear') is not None}
+DB['boxDrops'] = {}
+_used = set()
+for d in L('t/drops.json'):
+    band = band_dk.get(d['DropKey'])
+    if band is None:
+        continue
+    DB['boxDrops'].setdefault(str(band), []).append([d['RewardKey'], d['Weight'], d.get('HeroKeyCondition') or 0])
+    _used.add(d['RewardKey'])
+# gear items only; non-gear groups stay as empty lists so the weight totals stay honest
+DB['dropGroups'] = {str(g): [k for k in g2items.get(g, []) if k in gear_ids] for g in _used}
+
                 
 payload = json.dumps(DB, ensure_ascii=False, separators=(',', ':'))
 out = os.path.join(ROOT, 'engine', 'gamedata.js')
