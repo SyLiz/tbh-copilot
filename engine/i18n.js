@@ -569,11 +569,11 @@
  for (const l in NTF) { UI[l] = Object.assign(UI[l] || {}, NTF[l]); }
 
  const THEME = {
- 'en-US': { theme_btn: 'light / dark theme' }, 'pt-BR': { theme_btn: 'tema claro / escuro' },
- 'es-ES': { theme_btn: 'tema claro / oscuro' }, 'fr-FR': { theme_btn: 'thème clair / sombre' },
- 'de-DE': { theme_btn: 'helles / dunkles Design' }, 'ja-JP': { theme_btn: 'ライト / ダークテーマ' },
- 'ko-KR': { theme_btn: '라이트 / 다크 테마' }, 'zh-Hans': { theme_btn: '浅色 / 深色主题' },
- 'zh-Hant': { theme_btn: '淺色 / 深色主題' }, 'ru-RU': { theme_btn: 'светлая / тёмная тема' },
+ 'en-US': { theme_btn: 'light / dark theme', reco_locate: 'click to locate it in the tree' }, 'pt-BR': { theme_btn: 'tema claro / escuro', reco_locate: 'clique pra localizar na árvore' },
+ 'es-ES': { theme_btn: 'tema claro / oscuro', reco_locate: 'haz clic para ubicarla en el árbol' }, 'fr-FR': { theme_btn: 'thème clair / sombre', reco_locate: "cliquez pour la situer dans l'arbre" },
+ 'de-DE': { theme_btn: 'helles / dunkles Design', reco_locate: 'klicken, um sie im Baum zu finden' }, 'ja-JP': { theme_btn: 'ライト / ダークテーマ', reco_locate: 'クリックでツリー内の位置を表示' },
+ 'ko-KR': { theme_btn: '라이트 / 다크 테마', reco_locate: '클릭하면 트리에서 위치를 보여줍니다' }, 'zh-Hans': { theme_btn: '浅色 / 深色主题', reco_locate: '点击在符文树中定位' },
+ 'zh-Hant': { theme_btn: '淺色 / 深色主題', reco_locate: '點擊在符文樹中定位' }, 'ru-RU': { theme_btn: 'светлая / тёмная тема', reco_locate: 'нажмите, чтобы найти её в древе' },
  };
  for (const l in THEME) { UI[l] = Object.assign(UI[l] || {}, THEME[l]); }
 
