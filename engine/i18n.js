@@ -490,6 +490,39 @@
  };
  for (const l in MKT) { UI[l] = Object.assign(UI[l] || {}, MKT[l]); }
 
+ // Shop tab: material-type labels (no official game localization exists — these are
+ // schema column names in the data) and list pagination.
+ const SHOP = {
+ 'en-US': { rs_t_decoration: 'Decoration', rs_t_engraving: 'Engraving', rs_t_inscription: 'Inscription', rs_more: 'show more (+{0})' },
+ 'pt-BR': { rs_t_decoration: 'Decoração', rs_t_engraving: 'Gravação', rs_t_inscription: 'Inscrição', rs_more: 'mostrar mais (+{0})' },
+ 'es-ES': { rs_t_decoration: 'Decoración', rs_t_engraving: 'Grabado', rs_t_inscription: 'Inscripción', rs_more: 'mostrar más (+{0})' },
+ 'fr-FR': { rs_t_decoration: 'Décoration', rs_t_engraving: 'Gravure', rs_t_inscription: 'Inscription', rs_more: 'afficher plus (+{0})' },
+ 'de-DE': { rs_t_decoration: 'Verzierung', rs_t_engraving: 'Gravur', rs_t_inscription: 'Inschrift', rs_more: 'mehr anzeigen (+{0})' },
+ 'ja-JP': { rs_t_decoration: '装飾', rs_t_engraving: '彫刻', rs_t_inscription: '銘刻', rs_more: 'さらに表示 (+{0})' },
+ 'ko-KR': { rs_t_decoration: '장식', rs_t_engraving: '각인', rs_t_inscription: '명문', rs_more: '더 보기 (+{0})' },
+ 'zh-Hans': { rs_t_decoration: '装饰', rs_t_engraving: '雕刻', rs_t_inscription: '铭文', rs_more: '显示更多 (+{0})' },
+ 'zh-Hant': { rs_t_decoration: '裝飾', rs_t_engraving: '雕刻', rs_t_inscription: '銘文', rs_more: '顯示更多 (+{0})' },
+ 'ru-RU': { rs_t_decoration: 'Украшение', rs_t_engraving: 'Гравировка', rs_t_inscription: 'Надпись', rs_more: 'показать ещё (+{0})' },
+ };
+ for (const l in SHOP) { UI[l] = Object.assign(UI[l] || {}, SHOP[l]); }
+
+ // Affix-only stats the game ships WITHOUT localized names (stat_strings has no name
+ // entry for them). Hand-translated here; matStatName() in the dashboard falls back to
+ // these st_* keys when the game data has no display name.
+ const STATS = {
+ 'en-US': { st_FireDamagePercent: 'Fire Damage %', st_ColdDamagePercent: 'Cold Damage %', st_LightningDamagePercent: 'Lightning Damage %', st_CastSpeed: 'Cast Speed', st_PhysicalDamagePercent: 'Physical Damage %', st_AddHpPerHit: 'HP per Hit', st_AreaOfEffect: 'Area of Effect', st_HpLeech: 'HP Leech', st_DamageReduction: 'Damage Reduction', st_AllElementalResistance: 'All Elemental Resistance', st_Multistrike: 'Multistrike', st_BaseAttackCountReduction: 'Base Attack Count Reduction', st_ProjectileCount: 'Projectile Count' },
+ 'pt-BR': { st_FireDamagePercent: '% de Dano de Fogo', st_ColdDamagePercent: '% de Dano de Gelo', st_LightningDamagePercent: '% de Dano de Raio', st_CastSpeed: 'Velocidade de Conjuração', st_PhysicalDamagePercent: '% de Dano Físico', st_AddHpPerHit: 'PV por Acerto', st_AreaOfEffect: 'Área de Efeito', st_HpLeech: 'Roubo de Vida', st_DamageReduction: 'Redução de Dano', st_AllElementalResistance: 'Resistência Elemental Total', st_Multistrike: 'Golpe Múltiplo', st_BaseAttackCountReduction: 'Redução de Ataques Base', st_ProjectileCount: 'Nº de Projéteis' },
+ 'es-ES': { st_FireDamagePercent: '% de daño de fuego', st_ColdDamagePercent: '% de daño de hielo', st_LightningDamagePercent: '% de daño de rayo', st_CastSpeed: 'Velocidad de lanzamiento', st_PhysicalDamagePercent: '% de daño físico', st_AddHpPerHit: 'PV por golpe', st_AreaOfEffect: 'Área de efecto', st_HpLeech: 'Robo de vida', st_DamageReduction: 'Reducción de daño', st_AllElementalResistance: 'Resistencia elemental total', st_Multistrike: 'Golpe múltiple', st_BaseAttackCountReduction: 'Reducción de ataques base', st_ProjectileCount: 'N.º de proyectiles' },
+ 'fr-FR': { st_FireDamagePercent: '% dégâts de feu', st_ColdDamagePercent: '% dégâts de froid', st_LightningDamagePercent: '% dégâts de foudre', st_CastSpeed: "Vitesse d'incantation", st_PhysicalDamagePercent: '% dégâts physiques', st_AddHpPerHit: 'PV par coup', st_AreaOfEffect: "Zone d'effet", st_HpLeech: 'Vol de vie', st_DamageReduction: 'Réduction des dégâts', st_AllElementalResistance: 'Résistance élémentaire totale', st_Multistrike: 'Frappe multiple', st_BaseAttackCountReduction: "Réduction d'attaques de base", st_ProjectileCount: 'Nombre de projectiles' },
+ 'de-DE': { st_FireDamagePercent: 'Feuerschaden %', st_ColdDamagePercent: 'Kälteschaden %', st_LightningDamagePercent: 'Blitzschaden %', st_CastSpeed: 'Zaubertempo', st_PhysicalDamagePercent: 'Physischer Schaden %', st_AddHpPerHit: 'LP pro Treffer', st_AreaOfEffect: 'Wirkungsbereich', st_HpLeech: 'Lebensraub', st_DamageReduction: 'Schadensreduktion', st_AllElementalResistance: 'Alle Elementarresistenzen', st_Multistrike: 'Mehrfachschlag', st_BaseAttackCountReduction: 'Basisangriffs-Reduktion', st_ProjectileCount: 'Projektilanzahl' },
+ 'ja-JP': { st_FireDamagePercent: '火炎ダメージ%', st_ColdDamagePercent: '冷気ダメージ%', st_LightningDamagePercent: '雷ダメージ%', st_CastSpeed: '詠唱速度', st_PhysicalDamagePercent: '物理ダメージ%', st_AddHpPerHit: 'ヒット毎HP', st_AreaOfEffect: '効果範囲', st_HpLeech: 'HP吸収', st_DamageReduction: 'ダメージ軽減', st_AllElementalResistance: '全属性耐性', st_Multistrike: 'マルチストライク', st_BaseAttackCountReduction: '基本攻撃回数減少', st_ProjectileCount: '投射体数' },
+ 'ko-KR': { st_FireDamagePercent: '화염 피해 %', st_ColdDamagePercent: '냉기 피해 %', st_LightningDamagePercent: '번개 피해 %', st_CastSpeed: '시전 속도', st_PhysicalDamagePercent: '물리 피해 %', st_AddHpPerHit: '타격당 HP', st_AreaOfEffect: '효과 범위', st_HpLeech: 'HP 흡수', st_DamageReduction: '피해 감소', st_AllElementalResistance: '모든 원소 저항', st_Multistrike: '다중 타격', st_BaseAttackCountReduction: '기본 공격 횟수 감소', st_ProjectileCount: '투사체 수' },
+ 'zh-Hans': { st_FireDamagePercent: '火焰伤害%', st_ColdDamagePercent: '冰霜伤害%', st_LightningDamagePercent: '闪电伤害%', st_CastSpeed: '施法速度', st_PhysicalDamagePercent: '物理伤害%', st_AddHpPerHit: '每次命中回血', st_AreaOfEffect: '作用范围', st_HpLeech: '生命偷取', st_DamageReduction: '伤害减免', st_AllElementalResistance: '全元素抗性', st_Multistrike: '多重打击', st_BaseAttackCountReduction: '基础攻击次数减少', st_ProjectileCount: '弹道数量' },
+ 'zh-Hant': { st_FireDamagePercent: '火焰傷害%', st_ColdDamagePercent: '冰霜傷害%', st_LightningDamagePercent: '閃電傷害%', st_CastSpeed: '施法速度', st_PhysicalDamagePercent: '物理傷害%', st_AddHpPerHit: '每次命中回血', st_AreaOfEffect: '作用範圍', st_HpLeech: '生命偷取', st_DamageReduction: '傷害減免', st_AllElementalResistance: '全元素抗性', st_Multistrike: '多重打擊', st_BaseAttackCountReduction: '基礎攻擊次數減少', st_ProjectileCount: '彈道數量' },
+ 'ru-RU': { st_FireDamagePercent: '% урона огнём', st_ColdDamagePercent: '% урона холодом', st_LightningDamagePercent: '% урона молнией', st_CastSpeed: 'Скорость произнесения', st_PhysicalDamagePercent: '% физического урона', st_AddHpPerHit: 'ОЗ за удар', st_AreaOfEffect: 'Область действия', st_HpLeech: 'Похищение здоровья', st_DamageReduction: 'Снижение урона', st_AllElementalResistance: 'Сопротивление всем стихиям', st_Multistrike: 'Мультиудар', st_BaseAttackCountReduction: 'Меньше базовых атак', st_ProjectileCount: 'Число снарядов' },
+ };
+ for (const l in STATS) { UI[l] = Object.assign(UI[l] || {}, STATS[l]); }
+
  function t(locale, key, vars) {
  const tbl = UI[locale] || UI['en-US'];
  let s = (tbl && tbl[key] != null) ? tbl[key] : (UI['en-US'][key] != null ? UI['en-US'][key] : key);

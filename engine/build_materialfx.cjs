@@ -1,6 +1,10 @@
 const fs = require('fs'), path = require('path');
 const src = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'wiki', 'material_effects.json'), 'utf8'));
-const mats = src.map(m => ({ key: m.key, name: m.name, grade: m.grade, type: m.type, grants: m.grants.map(g => ({ slot: g.slot, stat: g.stat, value: g.value, tier: g.tier, chance: g.chance })) }));
+// names = the game's own 16-locale item names (display); name stays the English
+// market-hash string that steamcommunity.com/market expects — do not swap them.
+const items = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'wiki', 'items.json'), 'utf8'));
+const nameById = Object.fromEntries(items.map(i => [String(i.id), i.name]));
+const mats = src.map(m => ({ key: m.key, name: m.name, names: nameById[String(m.key)] || null, grade: m.grade, type: m.type, grants: m.grants.map(g => ({ slot: g.slot, stat: g.stat, value: g.value, tier: g.tier, chance: g.chance })) }));
 const payload = JSON.stringify(mats);
 const out = ';(function(x){x.TBH_MATFX=' + payload + ';if(typeof module!=="undefined"&&module.exports)module.exports=x.TBH_MATFX;})(typeof globalThis!=="undefined"?globalThis:this);\n';
 fs.writeFileSync(path.join(__dirname, 'materialfx.js'), out);
