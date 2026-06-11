@@ -328,13 +328,14 @@ function recompute(){if(!PSD)return;const c=PSD.commonSaveData;const rec=ENG.rec
 function goldPerSec(){return rateOf('g');}
 function expPerSec(){return rateOf('x');}
 
-let REC=null,PSD=null,demoMode=false,wfHero=null,wfSlot=null;
+// app state: PSD = parsed save, lastRec = latest engine recommendation, lastMeta = header chips
+let PSD=null,lastRec=null,lastMeta=null,demoMode=false,wfHero=null,wfSlot=null;
 let fallbackBuf=null,fallbackMode=false;
 let gearLvlCap=null;
 const dpClass=d=>d>0.5?'pos':d<-0.5?'neg':'zero';
 const dpStr=d=>(d>0?'+':'')+fmt(d);
 function slotGearType(heroKey,slot){
- if(REC){const s=REC.gear.slots.find(x=>x.heroKey===heroKey&&x.slot===slot);if(s)return s.gearType;}
+ if(lastRec){const s=lastRec.gear.slots.find(x=>x.heroKey===heroKey&&x.slot===slot);if(s)return s.gearType;}
  const h=DB.heroes[String(heroKey)]||{};
  if(slot===0)return h.mainW;if(slot===1)return h.subW;
  return [null,null,'HELMET','ARMOR','GLOVES','BOOTS','AMULET','EARING','RING','BRACER'][slot];
@@ -383,21 +384,21 @@ function renderResearch(){const M=window.TBH_MATFX||[];if(!M.length){$('rsList')
  $('rsList').querySelectorAll('[data-cart]').forEach(b=>b.onclick=()=>{const k=b.dataset.cart;rsCart.has(k)?rsCart.delete(k):rsCart.add(k);saveRsCart();renderResearch();});
  loadMatPrices();}
 function renderWhatIf(){
- if(!REC){$('wfCands').innerHTML='';return;}
+ if(!lastRec){$('wfCands').innerHTML='';return;}
  const SLOT_NAMES=t('g_slots').split(',');
- const party=REC.meta.party;
+ const party=lastRec.meta.party;
  const owned=PSD?new Set(Object.keys(ENG.heroSaveMap(PSD)).map(Number)):new Set(party);
- if(wfHero==null||!owned.has(wfHero))wfHero=owned.has(REC.meta.carryHero)?REC.meta.carryHero:(party.find(k=>owned.has(k))||party[0]);
+ if(wfHero==null||!owned.has(wfHero))wfHero=owned.has(lastRec.meta.carryHero)?lastRec.meta.carryHero:(party.find(k=>owned.has(k))||party[0]);
  $('wfHeroBar').innerHTML=Object.keys(DB.heroes).map(k=>{const hk=+k,own=owned.has(hk);
  return `<div class="havatar ${hk===wfHero?'on':''} ${own?'':'locked'}" data-h="${hk}" title="${heroName(hk)}"><img src="${heroIcon(hk)}" onerror="this.style.visibility='hidden'"><span class="hn">${heroName(hk)}</span></div>`;}).join('');
  $('wfHeroBar').querySelectorAll('.havatar:not(.locked)').forEach(a=>a.onclick=()=>{wfHero=+a.dataset.h;wfSlot=null;gearLvlCap=null;renderWhatIf();});
- const heroLvl=(PSD&&(ENG.heroSaveMap(PSD)[wfHero]||{}).HeroLevel)||((REC.heroes.find(h=>h.heroKey===wfHero)||{}).level)||((REC.farm||{}).partyLevel)||30;
+ const heroLvl=(PSD&&(ENG.heroSaveMap(PSD)[wfHero]||{}).HeroLevel)||((lastRec.heroes.find(h=>h.heroKey===wfHero)||{}).level)||((lastRec.farm||{}).partyLevel)||30;
  const gearCap=gearLvlCap!=null?gearLvlCap:heroLvl;
  const _gr=$('gearLvlRange');if(_gr){_gr.value=gearCap;$('gearLvlVal').textContent=gearCap;$('gearLvlPre').textContent=t('gear_lvl');}
  let slots;
  if(PSD){const hs=ENG.heroSaveMap(PSD)[wfHero]||{},eq=hs.equippedItemIds||[],byUid={};for(const it of (PSD.itemSaveDatas||[]))byUid[it.UniqueId]=it;
  slots=[];for(let s=0;s<SLOT_NAMES.length;s++){const uid=eq[s]||0,it=uid?byUid[uid]:null,idb=it?DB.items[it.ItemKey]:null;slots.push({slot:s,current:idb?{level:idb.lvl}:null});}}
- else slots=(REC.gear.slots||[]).filter(s=>s.heroKey===wfHero).sort((a,b)=>a.slot-b.slot);
+ else slots=(lastRec.gear.slots||[]).filter(s=>s.heroKey===wfHero).sort((a,b)=>a.slot-b.slot);
  $('wfSlots').innerHTML=slots.map(s=>{const lvl=s.current?`<span class="lv">${s.current.level}</span>`:'';
  return `<div class="slotcell ${s.slot===wfSlot?'on':''} ${s.current?'':'empty'}" data-slot="${s.slot}" title="${SLOT_NAMES[s.slot]||''}">${slotIcon(s.slot)}${lvl}</div>`;}).join('');
  $('wfSlots').querySelectorAll('.slotcell').forEach(c=>c.onclick=()=>{wfSlot=+c.dataset.slot;renderWhatIf();});
@@ -406,7 +407,7 @@ function renderWhatIf(){
  const gt=slotGearType(wfHero,wfSlot);
  const hsm=ENG.heroSaveMap(PSD), heroSave=hsm[wfHero];
  const equippedElsewhere=new Set();
- for(const hk of REC.meta.party){if(hk===wfHero)continue;for(const u of (hsm[hk]||{}).equippedItemIds||[])if(u)equippedElsewhere.add(u);}
+ for(const hk of lastRec.meta.party){if(hk===wfHero)continue;for(const u of (hsm[hk]||{}).equippedItemIds||[])if(u)equippedElsewhere.add(u);}
  const curUid=(heroSave.equippedItemIds||[])[wfSlot]||0;
  const cands=[],ownedKeys=new Set();
  for(const it of PSD.itemSaveDatas||[]){const idb=DB.items[it.ItemKey];if(!idb||idb.gt!==gt)continue;
@@ -454,9 +455,8 @@ async function drawHistory(){const pts=(await histAll()).sort((a,b)=>a.t-b.t);
  }else $('histPow').textContent=t('hist_collecting');}
 function renderLab(){if(curTab==='whatif')renderWhatIf();else if(curTab==='hist')drawHistory();}
 
-let lastRec=null,lastMeta=null;
 function render(rec,meta){
- lastRec=rec;REC=rec;lastMeta=meta;
+ lastRec=rec;lastMeta=meta;
  $('foot').textContent=t('footer');$('lblGold').textContent=t('gold');$('lblPerH').textContent=t('per_hour');$('lblPow').textContent=t('power');
  $('tDoNow').textContent=t('do_now');$('tSummary').textContent=t('summary');
  $('tFarm2').textContent=t('farming');$('tIdle2').textContent=t('idle_title');$('tRunes2').textContent=t('tree_title');$('tGear').textContent=t('g_title');$('tStages').textContent=t('f_stages');$('refreshBtn').title=t('refresh_save');$('tHistPow').textContent=t('hist_power');$('tHistGold').textContent=t('hist_gold');$('histNote').textContent=t('hist_note');var _tr=$('tResearch');if(_tr)_tr.textContent=t('rs_title');var _tc=$('tCart');if(_tc)_tc.textContent=t('rs_cart');
