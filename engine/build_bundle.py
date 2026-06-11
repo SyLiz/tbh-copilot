@@ -23,7 +23,11 @@ def i18n(d):
         out['en-US'] = d['en-US']
     return out
 
-DB = {'locales': GAME_LOCALES, 'version': {'wiki': '1.00.05', 'save': '1.00.09'}}
+# wiki = the data version this bundle is built from (manifest); save = newest game/save
+# version those tables describe. The dashboard's drift badge fires when a player's save
+# is newer than 'save'. The wiki publishes the game's own version, so they move together.
+_manifest_v = L('manifest.json').get('version', '?')
+DB = {'locales': GAME_LOCALES, 'version': {'wiki': _manifest_v, 'save': _manifest_v}}
 
                   
 DB['heroes'] = {}
