@@ -748,8 +748,11 @@
  if (x.farm.recommend && x.farm.current && x.farm.recommend.key !== x.farm.current.key)
  a.push({ k: 'farm_switch', from: x.farm.current.key, to: x.farm.recommend.key });
  else if (x.farm.push) a.push({ k: 'farm_push', to: x.farm.push.key, lvl: x.farm.push.lvl });
+ // Beginner hint for the fire wall: stages 3-6..3-9 (lvl 28-31) deal fire damage. Only
+ // warn while the frontier is approaching or inside that band — a player who already
+ // cleared past it obviously survived and the hint would just be noise.
  { const fr = x.farm || {}, reach = Math.max((fr.current && fr.current.lvl) || 0, (fr.frontier && fr.frontier.lvl) || 0);
- if (reach >= 28 && (x.heroes || []).length) { let front = null; for (const h of x.heroes) if (!front || (h.ehp || 0) > (front.ehp || 0)) front = h;
+ if (reach >= 26 && reach <= 31 && (x.heroes || []).length) { let front = null; for (const h of x.heroes) if (!front || (h.ehp || 0) > (front.ehp || 0)) front = h;
  const st = (front && front.stats) || {}, res = (st.FireResistance || 0) + (st.AllElementalResistance || 0);
  if (res < 30) a.push({ k: 'fire_protection', lvl: reach, res: Math.round(res), hero: front && front.heroKey }); } }
  if (x.runes.firstDpsPath) a.push({ k: 'rune_dps_path', target: x.runes.firstDpsPath.target, cost: x.runes.firstDpsPath.totalCost });
