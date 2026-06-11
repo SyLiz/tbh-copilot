@@ -20,6 +20,7 @@
  CLEAR_DUTY: 0.65, // fraction of wall-clock actually spent clearing; matches sustained rates
  CLEAR_CAP: 90, // soft kill-speed cap (s) so one-shot stages don't divide by ~0
  ALMOST_FREE_FRACTION: 0.1, // a rune is "almost free" if it costs <=10% of the gold balance
+ SKIP_COST: 1e6, // mega-priced rune nodes are "skip" — but only while the player can't afford them
  SAFE_DANGER: 0.6, DANGER_TOL: 1.15, // survival-margin bands (comfortable / tight)
  SKILL_SCALE: 1.0, // labeled estimate: active-skill damage assumed proportional to AD
  SLOT_TYPES: [null, null, 'HELMET', 'ARMOR', 'GLOVES', 'BOOTS', 'AMULET', 'EARING', 'RING', 'BRACER'],
@@ -458,7 +459,7 @@
  if (maxL > 0 && lv >= maxL) status = 'maxed';
  else if (lv > 0) status = 'owned';
  else if (!unlockable) status = 'locked';
- else if (nextRow && nextRow.cost >= 1000000) status = 'skip';
+ else if (nextRow && nextRow.cost >= PARAMS.SKIP_COST && nextRow.cost > have) status = 'skip';
  else if (dpsPath.has(Number(key)) || (isCombat && dPower > 0)) status = 'recommended';
  else if (nextRow && nextRow.cost <= af) status = 'almostfree';
  else status = 'available';

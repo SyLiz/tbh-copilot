@@ -135,6 +135,8 @@ for (const [keys, st] of [[E.OFFLINE_RUNES.gold, 'OfflineRewardGoldPercent'], [E
  ok(keys.every(k => grantsOf(k).includes(st)), `${st} rune keys all grant that stat`);
 }
 ok(grantsOf(E.OFFLINE_RUNES.unlock).includes('UnlockOfflineReward'), 'offline unlock rune key grants UnlockOfflineReward');
+const skipNodes = Object.values(r.runeTree.nodes).filter(n => n.status === 'skip');
+ok(skipNodes.every(n => n.cost > E.gold(psd)), 'no skip-status rune is actually affordable (skip is relative to gold)');
 
 console.log('\n-- power delta (gear) --');
 const rangerSave = psd.heroSaveDatas.find(h => h.heroKey === 201);
