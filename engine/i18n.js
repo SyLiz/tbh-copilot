@@ -624,6 +624,22 @@
  };
  for (const l in TABFIX) { UI[l] = Object.assign(UI[l] || {}, TABFIX[l]); }
 
+ // Chest tab disclaimer — the devs are cracking down on reconnect-to-skip-cooldown
+ // exploits; make crystal clear this is a passive reminder, not a game-touching tool.
+ const CHESTLEGIT = {
+ 'en-US': { chest_legit: 'Just a passive reminder of your normal cooldown — it never touches the game, reconnects, or bypasses anything.' },
+ 'pt-BR': { chest_legit: 'Apenas um lembrete passivo do seu cooldown normal — não toca no jogo, não reconecta e não burla nada.' },
+ 'es-ES': { chest_legit: 'Solo un recordatorio pasivo de tu cooldown normal — nunca toca el juego, ni reconecta, ni elude nada.' },
+ 'fr-FR': { chest_legit: 'Juste un rappel passif de votre cooldown normal — il ne touche jamais au jeu, ne reconnecte rien et ne contourne rien.' },
+ 'de-DE': { chest_legit: 'Nur eine passive Erinnerung an deinen normalen Cooldown — es greift nie ins Spiel ein, verbindet nichts neu und umgeht nichts.' },
+ 'ja-JP': { chest_legit: '通常クールダウンの受動的なリマインダーです — ゲームには一切干渉せず、再接続も回避もしません。' },
+ 'ko-KR': { chest_legit: '평범한 쿨다운을 알려주는 수동적 알림일 뿐입니다 — 게임에 관여하거나 재접속하거나 우회하지 않습니다.' },
+ 'zh-Hans': { chest_legit: '只是被动提醒你正常的冷却时间——它不会接触游戏、不会重连、也不会绕过任何机制。' },
+ 'zh-Hant': { chest_legit: '只是被動提醒你正常的冷卻時間——它不會接觸遊戲、不會重連、也不會繞過任何機制。' },
+ 'ru-RU': { chest_legit: 'Просто пассивное напоминание о вашем обычном кулдауне — оно не трогает игру, не переподключается и ничего не обходит.' },
+ };
+ for (const l in CHESTLEGIT) { UI[l] = Object.assign(UI[l] || {}, CHESTLEGIT[l]); }
+
  // Sell Advisor tab — rank tradeable inventory + track the 4 listing slots (8h relist interval)
  const SELL = {
  'en-US': { tab_sell: 'Sell', sell_title: 'BEST TO SELL', sell_slots_title: 'LISTING SLOTS', sell_intro: 'Ranked by estimated value per 8h listing slot — unit price × how fast that grade tends to sell. List your top picks first; a cheap item that sells fast can beat a pricey one that just sits.', sell_estnote: 'Liquidity (fast/slow) is an estimate by grade, not live Steam volume — treat it as a hint.', sell_manual: 'Steam hides your active listings, so this tracker is manual: hit “list” when you post an item and the slot counts down its 8h relist interval, then dings when it’s free.', sell_inuse: '{0}/{1} slots listed', sell_slotempty: 'free slot', sell_list: 'list', sell_relist: 'relist', sell_listed: 'listed', sell_ready: 'ready to relist', sell_freein: 'free in {0}', sell_pickfree: 'all {0} slots are listed — wait for one to free up', sell_owned: '×{0}', sell_npc: '{0} gold to NPC', sell_nolist: 'not listed', sell_rankhdr: 'best value per slot first', sell_liq_fast: 'sells fast', sell_liq_med: 'medium', sell_liq_slow: 'sells slow', sell_empty: 'no tradeable items in your inventory', sell_demo: 'connect your save to rank your real inventory', sell_ntf: '{0} slot is free — relist; next best: {1}', sell_anything: 'your top item' },
