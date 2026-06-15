@@ -40,9 +40,10 @@ nothing ever leaves your machine.
 | **Interactive rune tree** | All 197 nodes laid out and colored by category. Pick a category (EXP, Combat, Gold, Items, Chest, Inventory, Offline, Utility) and the tree highlights that branch and lists the three cheapest buyable nodes. Almost-free runes are called out. |
 | **Gear comparator** | For any slot, the POWER delta of every item: the ones in your bag and the ones you don't have yet (capped to gear you can realistically farm), with live Steam Market prices, listing links, and **where each item drops**. ★ an item and the Farm tab gains a wishlist view that ranks stages by where your favorites actually drop. |
 | **Shop / build planner** | Pick the effects you want (Decorations, Engravings, Inscriptions), see which materials grant them, and build a cart with live Steam Market prices — then open every listing with one click. |
+| **Sell advisor** | With the market limited to 4 listing slots on an 8 h relist interval, it ranks your tradeable gear and materials by estimated value *per slot* (Steam price × how fast that grade tends to sell), compares each against its NPC gold value, and tracks the four slots with an 8 h countdown and a background "slot free" notification. Liquidity is a labeled estimate by grade, not live Steam volume. |
 | **History charts** | POWER and gold tracked over time in your browser (IndexedDB), so you can see how fast you're actually growing. |
 | **Chest timers** | Auto-open countdowns for normal / stage-boss / act-boss chests, pre-filled with *your* real cooldowns (base minus your reduction runes) and capacity, read straight from the save. Repeating timer with a synthesized audio alert and a background notification each cycle. |
-| **Notifications** | Opt-in browser notifications while the tab sits in the background: a hero levels up, a planned purchase becomes affordable, or your offline rewards hit the 8 h cap. |
+| **Notifications** | Opt-in browser notifications while the tab sits in the background: a hero levels up, a planned purchase becomes affordable, a market listing slot frees up, or your offline rewards hit the 8 h cap. |
 | **Install & themes** | Installable as an app (PWA) with offline-cached sprites; dark and light themes. |
 | **16 languages** | UI and game content localized; the stat model is calibrated against the in-game Status panel. |
 
@@ -68,7 +69,8 @@ Then:
    demand — click the refresh button to re-read. Or click **demo** to look around first.
 
 Everything lives on one page: an **Overview** (party roster and what-to-do-now), the **Farm**
-optimizer, the **Runes** tree, a **Gear** comparator, the **Shop** build planner, and **History** charts.
+optimizer, the **Runes** tree, a **Gear** comparator, the **Shop** build planner, a **Sell** advisor,
+and **History** charts.
 
 ## How it works
 
@@ -82,7 +84,7 @@ One engine drives both surfaces: `engine/engine.js` (UMD, runs in the browser an
 effective DPS/EHP/POWER, leveling, the calibrated farm optimizer, idle, the rune tree and planners, and the
 gear and enchant deltas. Every tab calls the same `recommend()`. The stat model uses the exact formulas
 recovered from the game binary (via the community wiki) and was checked against the in-game Status panel,
-and a 68-assertion test suite validates it against a real save on every push.
+and an 83-assertion test suite validates it against a real save on every push.
 
 ```
 index.html            landing page
@@ -97,7 +99,7 @@ data/                 trimmed stage and rune tables
 There is deliberately no toolchain: edit a file, refresh the browser.
 
 ```bash
-node engine/test.cjs    # run the engine test suite (68 assertions vs a real save)
+node engine/test.cjs    # run the engine test suite (83 assertions vs a real save)
 ```
 
 CI runs the same suite on every push. Issues and PRs are welcome — and if the

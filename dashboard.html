@@ -328,7 +328,37 @@ body.light .chest-ic{background:var(--panel2)}
 .tlrow:last-child{border-bottom:0}
 .tlrow .tlw{min-width:118px;color:var(--exp);font-variant-numeric:tabular-nums}.tlrow .tlw .tld{color:var(--dim);font-size:12px}
 .tlrow .tll{color:var(--ink)}
-</style></head><body><div class="wrap" id="stage"><div class="top"><div class="logo">TBH <b>CO·PILOT</b></div><div class="live"><span class="dot" id="dot"></span><span id="connTxt">—</span></div><button class="rfbtn" id="refreshBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3.5v5h-5"/></svg></button><button class="rfbtn" id="notifBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 22a2.3 2.3 0 0 0 2.3-2.3H9.7A2.3 2.3 0 0 0 12 22Zm7-5.5v-1l-1.6-1.6V9.6c0-3-1.8-5.4-4.4-6V3a1 1 0 1 0-2 0v.6c-2.6.6-4.4 3-4.4 6v4.3L5 15.5v1Z"/></svg></button><button class="rfbtn" id="themeBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 4a8 8 0 1 0 8 8c0-.4 0-.8-.1-1.2A6.2 6.2 0 0 1 11.2 4.1c.3-.1.5-.1.8-.1Z"/></svg></button><div class="sp"></div><select class="lang" id="lang"></select><div class="chip" id="ptime">—</div><div class="chip" id="ver">v—</div></div><div class="banner" id="banner"></div><div class="strip"><div class="s-gold"><div class="lbl"><span id="lblGold">GOLD</span></div><div class="num" id="gold">0</div><div class="sub"><b id="ghr">—</b><span id="lblPerH">/h</span> · <span id="curStage">—</span></div></div><div class="s-stat"><div class="k" id="lblPow">POWER</div><div class="v pow" id="partyPow">—</div><div class="sm" id="partyDps">—</div></div></div><div class="tabs" id="tabs"></div><div class="pane" id="pane-overview"><div id="coachCard"></div><div id="ovHeroes"></div><div class="grid2"><div class="panel"><div class="ptitle" id="tDoNow">DO NOW</div><div id="doNow"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tSummary">SUMMARY</div><div id="ovSummary"></div></div></div><div class="panel" style="margin-top:14px"><div class="ptitle" style="--c:var(--exp)" id="tTimeline">TIMELINE</div><div id="timeline"></div></div></div><div class="pane" id="pane-farm"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--exp)" id="tFarm2">FARM</div><div id="farm"></div></div><div class="panel"><div class="ptitle" style="--c:var(--warn)" id="tIdle2">IDLE</div><div id="idle"></div></div></div><div class="panel" id="fpTable" style="margin-top:14px"><div class="ptitle" style="--c:var(--gold)" id="tStages">STAGES</div><div id="farmtable"></div></div><div class="panel" style="margin-top:14px"><div class="ptitle" style="--c:var(--violet)" id="tPets">PETS</div><div id="pets"></div></div></div><div class="pane" id="pane-runes"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tRunes2">RUNES</div><div class="treewrap"><svg id="tree" preserveAspectRatio="xMidYMid meet"></svg><div class="tctl"><button id="tFit">fit</button><button id="tIn">+</button><button id="tOut">−</button></div><div class="thint" id="thint"></div><div class="tdetail" id="tdetail"></div></div><div class="legend" id="legend"></div><div class="gsl"><span class="gsl-pre" id="gslPre">enable up to</span><input type="range" id="gslRange" min="0" max="1000" value="1000"><input type="number" id="gslNum" class="gsl-num" min="0" placeholder="gold"><span class="gsl-val" id="gslVal">all</span></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tReco">RECOMENDAR</div><div class="catbtns" id="catBtns"></div><div id="recoList"></div></div><div class="panel" style="margin-top:14px"><div class="ptitle" style="--c:var(--good)" id="tCartPlan">SPENDING PLAN</div><div class="note" id="cartHint" style="margin-top:0"></div><div id="goldCart"></div></div></div><div class="pane" id="pane-whatif"><div class="panel"><div class="ptitle" style="--c:#9db4ff" id="tGear">GEAR</div><div class="herobar" id="wfHeroBar"></div><div class="gsl"><span class="gsl-pre" id="gearLvlPre">up to level</span><input type="range" id="gearLvlRange" min="1" max="100" step="1" value="30"><span class="gsl-val" id="gearLvlVal">30</span></div><div class="slotbar" id="wfSlots"></div><div class="mktnote"></div><div id="wfCands"></div></div><div class="grid2" style="margin-top:14px"><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tProg">PROGRESSION</div><div id="gearProg"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tSynth">SYNTHESIS</div><div id="synth"></div></div></div></div><div class="pane" id="pane-research"><div class="panel" id="rsCartPanel"><div class="ptitle" style="--c:var(--gold)" id="tCart">CART</div><div id="rsCart"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tResearch">RESEARCH</div><div class="mktnote"></div><div id="rsTop"></div><div id="rsList"></div></div></div><div class="pane" id="pane-chests"><div class="panel"><div class="ptitle" style="--c:var(--violet)" id="tChests">CHESTS</div><div class="note" id="chestIntro" style="margin-top:0"></div><div id="chestList"></div><div class="chestctl"><span class="gsl-pre" id="chestVolLbl">alert volume</span><input type="range" id="chestVol" min="0" max="100" value="60"><button class="fsort" id="chestTest">test</button></div></div></div><div class="pane" id="pane-hist"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tHistPow">HISTORY · POWER</div><svg class="spark" id="sparkPow" preserveAspectRatio="none"></svg><div id="histPow" class="sub"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tHistGold">HISTORY · GOLD</div><svg class="spark" id="sparkGold" preserveAspectRatio="none"></svg><div id="histGold" class="sub"></div></div><div class="note" id="histNote">—</div></div><div class="foot" id="foot">100% local</div></div><div class="gate" id="gate"><div class="gcard"><div class="glogo">TBH <b>CO·PILOT</b></div><p id="gateMsg">—</p><button class="btn" id="connectBtn"> CONNECT</button><button class="btn ghost" id="demoBtn">demo</button><div class="gerr" id="gerr"></div><div class="gnote" id="gnote">SaveFile_Live.es3 · AppData\LocalLow\TesseractStudio\TaskbarHero</div><input type="file" id="fileInput" accept=".es3" style="display:none"></div></div><div class="hsheet" id="hsheet"><div class="hs-card" id="hsCard"></div></div><div class="toast" id="toast"></div><script src="engine/gamedata.js?v=50"></script><script src="engine/i18n.js?v=50"></script><script src="engine/engine.js?v=50"></script><script src="engine/demo.js?v=50"></script><script src="engine/gearnames.js?v=50"></script><script src="engine/materialfx.js?v=50"></script><script>
+.sellslots{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+@media(max-width:560px){.sellslots{grid-template-columns:1fr}}
+.sslot{border:1px solid var(--line2);border-radius:10px;padding:9px 11px;background:var(--panel2);display:flex;align-items:center;gap:9px;min-height:56px}
+.sslot.free{border-style:dashed;color:var(--dim)}
+.sslot.ready{border-color:#3a6b3f;background:linear-gradient(100deg,#0e1a10,#0d1119)}
+.sslot.run{border-color:#5a4a1e}
+body.light .sslot.ready{background:var(--panel2)}
+.sslot .sri{width:30px;height:30px;border-radius:7px;object-fit:contain;flex:none;background:#0a0e16;padding:2px}
+.sslot .ssn{flex:1;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sslot .sscd{font-variant-numeric:tabular-nums;color:var(--exp);font-weight:700;font-size:12.5px;white-space:nowrap}
+.sslot.ready .sscd{color:var(--good)}
+.sslot .ssbtn{flex:none;border:1px solid var(--line2);border-radius:7px;background:transparent;color:var(--ink);font-size:12px;padding:5px 9px;cursor:pointer}
+.sslot .ssbtn:hover{border-color:var(--gold);color:var(--gold)}
+.sslot .ssx{flex:none;border:1px solid var(--line2);border-radius:7px;background:transparent;color:var(--dim);cursor:pointer;padding:4px 7px;line-height:1}
+.sslot .ssx:hover{border-color:var(--bad);color:var(--bad)}
+.sellrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.sellrow:last-child{border-bottom:0}
+.sellrow .srk{flex:none;width:20px;text-align:right;color:var(--dim);font-family:var(--px);font-size:12px}
+.sellrow .sri{width:34px;height:34px;border-radius:7px;object-fit:contain;flex:none;background:#0a0e16;padding:2px}
+.sellinfo{flex:1;min-width:0}
+.sellnm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sellnm .sg{color:var(--dim);font-weight:400}
+.sellmeta{font-size:11.5px;color:var(--mut);margin-top:1px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.liq{font-size:10px;font-family:var(--px);letter-spacing:.05em;padding:1px 5px;border-radius:5px;border:1px solid var(--line2)}
+.liq.fast{color:var(--good);border-color:#3a6b3f}.liq.med{color:var(--gold);border-color:#5a4a1e}.liq.slow{color:var(--mut)}
+.sellprice{font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.sellprice .mktl{color:var(--gold)}
+.selllist{flex:none;border:1px solid var(--line2);border-radius:7px;background:transparent;color:var(--ink);font-size:12px;padding:6px 11px;cursor:pointer}
+.selllist:hover{border-color:var(--good);color:var(--good)}
+.selllist.dis{opacity:.4;pointer-events:none}
+</style></head><body><div class="wrap" id="stage"><div class="top"><div class="logo">TBH <b>CO·PILOT</b></div><div class="live"><span class="dot" id="dot"></span><span id="connTxt">—</span></div><button class="rfbtn" id="refreshBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3.5v5h-5"/></svg></button><button class="rfbtn" id="notifBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 22a2.3 2.3 0 0 0 2.3-2.3H9.7A2.3 2.3 0 0 0 12 22Zm7-5.5v-1l-1.6-1.6V9.6c0-3-1.8-5.4-4.4-6V3a1 1 0 1 0-2 0v.6c-2.6.6-4.4 3-4.4 6v4.3L5 15.5v1Z"/></svg></button><button class="rfbtn" id="themeBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 4a8 8 0 1 0 8 8c0-.4 0-.8-.1-1.2A6.2 6.2 0 0 1 11.2 4.1c.3-.1.5-.1.8-.1Z"/></svg></button><div class="sp"></div><select class="lang" id="lang"></select><div class="chip" id="ptime">—</div><div class="chip" id="ver">v—</div></div><div class="banner" id="banner"></div><div class="strip"><div class="s-gold"><div class="lbl"><span id="lblGold">GOLD</span></div><div class="num" id="gold">0</div><div class="sub"><b id="ghr">—</b><span id="lblPerH">/h</span> · <span id="curStage">—</span></div></div><div class="s-stat"><div class="k" id="lblPow">POWER</div><div class="v pow" id="partyPow">—</div><div class="sm" id="partyDps">—</div></div></div><div class="tabs" id="tabs"></div><div class="pane" id="pane-overview"><div id="coachCard"></div><div id="ovHeroes"></div><div class="grid2"><div class="panel"><div class="ptitle" id="tDoNow">DO NOW</div><div id="doNow"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tSummary">SUMMARY</div><div id="ovSummary"></div></div></div><div class="panel" style="margin-top:14px"><div class="ptitle" style="--c:var(--exp)" id="tTimeline">TIMELINE</div><div id="timeline"></div></div></div><div class="pane" id="pane-farm"><div class="grid2"><div class="panel"><div class="ptitle" style="--c:var(--exp)" id="tFarm2">FARM</div><div id="farm"></div></div><div class="panel"><div class="ptitle" style="--c:var(--warn)" id="tIdle2">IDLE</div><div id="idle"></div></div></div><div class="panel" id="fpTable" style="margin-top:14px"><div class="ptitle" style="--c:var(--gold)" id="tStages">STAGES</div><div id="farmtable"></div></div><div class="panel" style="margin-top:14px"><div class="ptitle" style="--c:var(--violet)" id="tPets">PETS</div><div id="pets"></div></div></div><div class="pane" id="pane-runes"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tRunes2">RUNES</div><div class="treewrap"><svg id="tree" preserveAspectRatio="xMidYMid meet"></svg><div class="tctl"><button id="tFit">fit</button><button id="tIn">+</button><button id="tOut">−</button></div><div class="thint" id="thint"></div><div class="tdetail" id="tdetail"></div></div><div class="legend" id="legend"></div><div class="gsl"><span class="gsl-pre" id="gslPre">enable up to</span><input type="range" id="gslRange" min="0" max="1000" value="1000"><input type="number" id="gslNum" class="gsl-num" min="0" placeholder="gold"><span class="gsl-val" id="gslVal">all</span></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tReco">RECOMENDAR</div><div class="catbtns" id="catBtns"></div><div id="recoList"></div></div><div class="panel" style="margin-top:14px"><div class="ptitle" style="--c:var(--good)" id="tCartPlan">SPENDING PLAN</div><div class="note" id="cartHint" style="margin-top:0"></div><div id="goldCart"></div></div></div><div class="pane" id="pane-whatif"><div class="panel"><div class="ptitle" style="--c:#9db4ff" id="tGear">GEAR</div><div class="herobar" id="wfHeroBar"></div><div class="gsl"><span class="gsl-pre" id="gearLvlPre">up to level</span><input type="range" id="gearLvlRange" min="1" max="100" step="1" value="30"><span class="gsl-val" id="gearLvlVal">30</span></div><div class="slotbar" id="wfSlots"></div><div class="mktnote"></div><div id="wfCands"></div></div><div class="grid2" style="margin-top:14px"><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tProg">PROGRESSION</div><div id="gearProg"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tSynth">SYNTHESIS</div><div id="synth"></div></div></div></div><div class="pane" id="pane-research"><div class="panel" id="rsCartPanel"><div class="ptitle" style="--c:var(--gold)" id="tCart">CART</div><div id="rsCart"></div></div><div class="panel"><div class="ptitle" style="--c:var(--good)" id="tResearch">RESEARCH</div><div class="mktnote"></div><div id="rsTop"></div><div id="rsList"></div></div></div><div class="pane" id="pane-sell"><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tSellSlots">LISTING SLOTS</div><div class="note" id="sellSlotNote" style="margin-top:0"></div><div id="sellSlots" class="sellslots"></div></div><div class="panel" style="margin-top:14px"><div class="ptitle" style="--c:var(--good)" id="tSell">BEST TO SELL</div><div class="mktnote"></div><div class="note" id="sellIntro" style="margin-top:0"></div><div id="sellList"></div></div></div><div class="pane" id="pane-chests"><div class="panel"><div class="ptitle" style="--c:var(--violet)" id="tChests">CHESTS</div><div class="note" id="chestIntro" style="margin-top:0"></div><div id="chestList"></div><div class="chestctl"><span class="gsl-pre" id="chestVolLbl">alert volume</span><input type="range" id="chestVol" min="0" max="100" value="60"><button class="fsort" id="chestTest">test</button></div></div></div><div class="pane" id="pane-hist"><div class="panel"><div class="ptitle" style="--c:var(--pow)" id="tHistPow">HISTORY · POWER</div><svg class="spark" id="sparkPow" preserveAspectRatio="none"></svg><div id="histPow" class="sub"></div></div><div class="panel"><div class="ptitle" style="--c:var(--gold)" id="tHistGold">HISTORY · GOLD</div><svg class="spark" id="sparkGold" preserveAspectRatio="none"></svg><div id="histGold" class="sub"></div></div><div class="note" id="histNote">—</div></div><div class="foot" id="foot">100% local</div></div><div class="gate" id="gate"><div class="gcard"><div class="glogo">TBH <b>CO·PILOT</b></div><p id="gateMsg">—</p><button class="btn" id="connectBtn"> CONNECT</button><button class="btn ghost" id="demoBtn">demo</button><div class="gerr" id="gerr"></div><div class="gnote" id="gnote">SaveFile_Live.es3 · AppData\LocalLow\TesseractStudio\TaskbarHero</div><input type="file" id="fileInput" accept=".es3" style="display:none"></div></div><div class="hsheet" id="hsheet"><div class="hs-card" id="hsCard"></div></div><div class="toast" id="toast"></div><script src="engine/gamedata.js?v=50"></script><script src="engine/i18n.js?v=50"></script><script src="engine/engine.js?v=50"></script><script src="engine/demo.js?v=50"></script><script src="engine/gearnames.js?v=50"></script><script src="engine/materialfx.js?v=50"></script><script>
 const PASSWORD='emuMqG3bLYJ938ZDCfieWJ';
 const $=id=>document.getElementById(id);
 const DB=window.TBH_DB,I18N=window.TBH_I18N,ENG=window.TBHEngine;
@@ -356,7 +386,7 @@ const fmtK=n=>{if(n==null||isNaN(n))return'—';n=Math.round(n);if(n>=1e6)return
 const fmtDur=s=>{if(s==null)return'—';s=Math.round(s);if(s<90)return s+'s';const m=Math.round(s/60);return m<90?m+'min':(s/3600).toFixed(1)+'h'};
 const CVAR={Priest:'#ffd98a',Ranger:'#74d28e',Sorcerer:'#a98cff',Knight:'#9db4ff',Hunter:'#74d28e',Slayer:'#ff8a5c'};
 
-const TABS=[['overview','tab_overview'],['farm','tab_farm'],['runes','tab_runes'],['whatif','tab_gear'],['research','tab_research'],['chests','tab_chests'],['hist','tab_hist']];
+const TABS=[['overview','tab_overview'],['farm','tab_farm'],['runes','tab_runes'],['whatif','tab_gear'],['research','tab_research'],['sell','tab_sell'],['chests','tab_chests'],['hist','tab_hist']];
 if(!TABS.some(([id])=>id===(localStorage.getItem('tbh_tab')||'overview')))localStorage.setItem('tbh_tab','overview');
 let curTab=localStorage.getItem('tbh_tab')||'overview';
 function renderTabs(rec){
@@ -370,7 +400,7 @@ function renderTabs(rec){
 function showTab(){TABS.forEach(([id])=>{$('pane-'+id).classList.toggle('on',id===curTab);});
  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on',el.dataset.tab===curTab));
  if(curTab==='runes'&&lastRec){drawTree(lastRec.runeTree);applyGoldDefault(lastRec.runeTree.nodes);syncGoldSlider();applyTreeFilters();}
- if(curTab==='hist')drawHistory();if(curTab==='whatif')renderWhatIf();if(curTab==='research')renderResearch();if(curTab==='chests')renderChests();}
+ if(curTab==='hist')drawHistory();if(curTab==='whatif')renderWhatIf();if(curTab==='research')renderResearch();if(curTab==='sell')renderSell();if(curTab==='chests')renderChests();}
 
 async function decryptSave(buf){
  const b=new Uint8Array(buf),iv=b.slice(0,16),ct=b.slice(16);
@@ -572,8 +602,8 @@ function render(rec,meta){
  $('partyPow').textContent=fmt(rec.heroes.reduce((a,h)=>a+h.power,0));
  $('partyDps').textContent=t('dps')+' '+fmtK(rec.meta.partyDPS);
  var _tl=$('tTimeline');if(_tl)_tl.textContent=t('tl_title');
- var _tt=[['tPets','pets_title'],['tProg','prog_title'],['tSynth','synth_title'],['tCartPlan','cart_title'],['tChests','chests_title']];for(const[id,k]of _tt){const e=$(id);if(e)e.textContent=t(k);}
- syncNotifBtn();if(curTab==='chests')renderChests();
+ var _tt=[['tPets','pets_title'],['tProg','prog_title'],['tSynth','synth_title'],['tCartPlan','cart_title'],['tChests','chests_title'],['tSell','sell_title'],['tSellSlots','sell_slots_title']];for(const[id,k]of _tt){const e=$(id);if(e)e.textContent=t(k);}
+ syncNotifBtn();if(curTab==='chests')renderChests();if(curTab==='sell')renderSell();
  renderTabs(rec);renderCoach(rec);renderOvHeroes(rec);renderDoNow(rec);renderSummary(rec,meta);renderTimeline(rec);renderFarm(rec);renderIdle(rec);renderPets(rec);renderGearProg(rec);renderSynth(rec);renderGoldCart(rec);renderRunes(rec);renderLab();
 }
 function renderOvHeroes(rec){
@@ -1013,6 +1043,110 @@ function chestTick(){let any=false;
  return any;}
 setInterval(()=>{if(Object.keys(chestState).length){if(curTab==='chests')chestTick();else for(const k of CHEST_KINDS){const s=chestState[k];if(!s)continue;const cycle=Math.floor((Date.now()-s.startAt)/1000/s.period);if(chestSeen[k]==null)chestSeen[k]=cycle;else if(cycle>chestSeen[k]){chestSeen[k]=cycle;chestAlert(k);}}}},1000);
 const CHEST_SVG='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10.5 5 5h14l2 5.5V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 10.5h18M12 10.5V20M9.5 13.5h5"/></svg>';
+
+// ── Sell Advisor: rank tradeable inventory + track the 4 market listing slots ──
+// Steam active-listings/cooldowns sit behind auth the CORS proxy can't reach, so the
+// 4-slot / 8h-relist tracker is manual (hit "list" when you post). The ranking is fully
+// automatic from your save + the public Steam prices already cached for the Gear/Shop tabs.
+const SELL_SLOTS=4,SELL_CD=8*3600;// June-15 market rules: 4 listings, 8h relist interval per slot
+// rough P(an item sells inside one 8h slot) by grade — a declared estimate, shown as a tag, not a promise
+const SELL_LIQ={COMMON:1,UNCOMMON:.95,RARE:.85,EPIC:.78,LEGEND:.68,LEGENDARY:.6,IMMORTAL:.5,ARCANA:.42,BEYOND:.34,CELESTIAL:.27,DIVINE:.2,COSMIC:.14};
+function sellLiq(g){const v=SELL_LIQ[String(g||'').toUpperCase()];return v!=null?v:.5;}
+function sellLiqTag(l){const c=l>=.65?'fast':l>=.38?'med':'slow';return `<span class="liq ${c}">${t('sell_liq_'+c)}</span>`;}
+function sellUsd(s){if(!s)return 0;const n=parseFloat(String(s).replace(/[^0-9.]/g,''));return isFinite(n)?n:0;}
+function ckFresh(ck){const c=priceCache[ck];return (c&&Date.now()-c.t<PRICE_TTL)?c:null;}
+function sellDur(sec){sec=Math.max(0,Math.ceil(sec));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return h>0?h+'h'+(m<10?'0':'')+m:m+':'+(s<10?'0':'')+s;}
+let sellSlots=[];try{sellSlots=JSON.parse(localStorage.getItem('tbh_sellslots')||'[]');}catch(e){}
+if(!Array.isArray(sellSlots))sellSlots=[];while(sellSlots.length<SELL_SLOTS)sellSlots.push(null);sellSlots.length=SELL_SLOTS;
+function saveSellSlots(){try{localStorage.setItem('tbh_sellslots',JSON.stringify(sellSlots));}catch(e){}}
+let sellNotified={},sellLoading=false;
+// build the rank list: loose tradeable gear (grouped by Steam hash) + owned matfx materials,
+// each scored as cached-USD-price × grade liquidity = estimated value of spending one 8h slot on it
+function sellCandidates(){
+ const out=[];if(!PSD)return out;
+ const hsm=ENG.heroSaveMap(PSD),equipped=new Set();
+ for(const hk in hsm)for(const u of (hsm[hk].equippedItemIds||[]))if(u)equipped.add(u);
+ const M=window.TBH_MATFX||[],byKey={};for(const m of M)byKey[String(m.key)]=m;
+ const gear={},mats={};
+ for(const it of PSD.itemSaveDatas||[]){
+  if(!equipped.has(it.UniqueId)){const gh=gearHash(it.ItemKey);if(gh){const ck=gh.name+'|'+gh.grade;
+   (gear[ck]=gear[ck]||{type:'gear',ck:ck,key:it.ItemKey,name:gh.name,dname:(window.TBH_GEARNAMES||{})[it.ItemKey]||gh.name,grade:gh.grade,qty:0,npc:DB.itemSell[String(it.ItemKey)]||0}).qty++;continue;}}
+  const m=byKey[String(it.ItemKey)];if(m){const k=String(it.ItemKey);
+   (mats[k]=mats[k]||{type:'mat',ck:'M|'+m.name,key:it.ItemKey,name:m.name,dname:matName(m),grade:m.grade,qty:0,npc:DB.itemSell[k]||0}).qty+=(it.Quantity||1);}
+ }
+ for(const k in gear)out.push(gear[k]);for(const k in mats)out.push(mats[k]);
+ for(const c of out){const p=ckFresh(c.ck);c.priceStr=p?p.price:undefined;c.priced=!!(p&&p.price);c.unlisted=!!(p&&!p.price);c.usd=sellUsd(c.priceStr);c.liq=sellLiq(c.grade);c.score=c.usd*c.liq;}
+ // priced items by score; then unpriced-unknown (surface so they get fetched); unlisted/zero last, by NPC gold
+ out.sort((a,b)=>{if(b.score!==a.score)return b.score-a.score;const au=a.priceStr===undefined?1:0,bu=b.priceStr===undefined?1:0;if(au!==bu)return bu-au;return (b.npc||0)-(a.npc||0)||b.qty-a.qty;});
+ return out;
+}
+function sellTopFree(){const cands=sellCandidates(),listed=new Set(sellSlots.filter(Boolean).map(s=>s.ck));return cands.find(c=>c.score>0&&!listed.has(c.ck))||cands.find(c=>!listed.has(c.ck))||null;}
+function sellListItem(c){if(!c)return;const i=sellSlots.findIndex(s=>!s);if(i<0){showToast(t('sell_pickfree',SELL_SLOTS));return;}sellSlots[i]={ck:c.ck,name:c.name,dname:c.dname,type:c.type,key:c.key,grade:c.grade,listedAt:Date.now()};saveSellSlots();renderSell();}
+function sellListLink(c){if(c.type==='mat')return matLink(c.name);const p=priceCache[c.ck];if(p&&p.hash)return steamLink(p.hash);const gh=gearHash(c.key);return gh?'https://steamcommunity.com/market/search?appid=3678970&q='+encodeURIComponent(gh.name+' ('+gh.grade+')'):'#';}
+function renderSell(){if($('sellIntro'))$('sellIntro').innerHTML=t('sell_intro')+`<br><span style="color:var(--dim)">${t('sell_estnote')}</span>`;renderSellSlots();renderSellList();loadSellPrices();}
+function renderSellSlots(){
+ const el=$('sellSlots');if(!el)return;
+ const used=sellSlots.filter(Boolean).length;
+ if($('sellSlotNote'))$('sellSlotNote').innerHTML=t('sell_manual')+`<br><b>${t('sell_inuse',used,SELL_SLOTS)}</b>`;
+ el.innerHTML=sellSlots.map((s,i)=>{
+  if(!s)return `<div class="sslot free"><span class="ssn">${t('sell_slotempty')}</span><button class="ssbtn" data-listtop="${i}">${t('sell_list')}</button></div>`;
+  const ready=Date.now()>=s.listedAt+SELL_CD*1000;
+  return `<div class="sslot ${ready?'ready':'run'}"><img class="sri" src="${itemIcon(s.key)}" onerror="this.style.visibility='hidden'"><span class="ssn">${s.dname||s.name} <i style="color:var(--dim);font-weight:400">${s.grade}</i></span><span class="sscd" id="sellCd-${i}"></span>${ready?`<button class="ssbtn" data-relist="${i}">${t('sell_relist')}</button>`:''}<button class="ssx" data-clr="${i}">✕</button></div>`;
+ }).join('');
+ el.querySelectorAll('[data-listtop]').forEach(b=>b.onclick=()=>sellListItem(sellTopFree()));
+ el.querySelectorAll('[data-relist]').forEach(b=>b.onclick=()=>{const i=+b.dataset.relist;if(sellSlots[i]){sellSlots[i].listedAt=Date.now();saveSellSlots();renderSell();}});
+ el.querySelectorAll('[data-clr]').forEach(b=>b.onclick=()=>{sellSlots[+b.dataset.clr]=null;saveSellSlots();renderSell();});
+ sellTick();
+}
+function renderSellList(){
+ const el=$('sellList');if(!el)return;
+ if(!PSD){el.innerHTML=`<div class="note">${t('sell_demo')}</div>`;return;}
+ const cands=sellCandidates();
+ if(!cands.length){el.innerHTML=`<div class="note">${t('sell_empty')}</div>`;return;}
+ const listed=new Set(sellSlots.filter(Boolean).map(s=>s.ck)),free=sellSlots.some(s=>!s);
+ el.innerHTML=`<div class="note" style="margin-top:0;margin-bottom:4px">${t('sell_rankhdr')}</div>`+cands.map((c,idx)=>{
+  const priceCell=c.priced?`<a class="mktl" href="${sellListLink(c)}" target="_blank" rel="noopener">${MKT_SVG}${c.priceStr}</a>`:(c.unlisted?`<span class="rsnp">${t('sell_nolist')}</span>`:`<span class="rsnp">·</span>`);
+  const npc=c.npc?` · <span title="${t('sell_npc',fmt(c.npc))}">${fmtK(c.npc)}g</span>`:'';
+  const liq=c.priced?' '+sellLiqTag(c.liq):'';
+  const isL=listed.has(c.ck);
+  const btn=isL?`<span class="liq med">${t('sell_listed')}</span>`:`<button class="selllist${free?'':' dis'}" data-list="${idx}">${t('sell_list')}</button>`;
+  return `<div class="sellrow"><span class="srk">${idx+1}</span><img class="sri" src="${itemIcon(c.key)}" onerror="this.style.visibility='hidden'"><div class="sellinfo"><div class="sellnm">${c.dname} <span class="sg">${c.grade}</span></div><div class="sellmeta">${t('sell_owned',c.qty)}${liq}${npc}</div></div><div class="sellprice">${priceCell}</div>${btn}</div>`;
+ }).join('');
+ el.querySelectorAll('[data-list]').forEach(b=>b.onclick=()=>sellListItem(cands[+b.dataset.list]));
+}
+function sellTick(){
+ for(let i=0;i<SELL_SLOTS;i++){const s=sellSlots[i],el=$('sellCd-'+i);if(!el)continue;
+  if(!s){el.textContent='';continue;}
+  const rem=(s.listedAt+SELL_CD*1000-Date.now())/1000;
+  el.textContent=rem>0?t('sell_freein',sellDur(rem)):t('sell_ready');
+ }
+}
+// lazily fetch missing Steam prices (rate-limited like the Gear/Shop tabs), re-sorting as they arrive
+async function loadSellPrices(){
+ if(sellLoading||!PSD)return;
+ const todo=sellCandidates().filter(c=>!ckFresh(c.ck));
+ if(!todo.length)return;
+ todo.sort((a,b)=>(b.npc||0)-(a.npc||0)||b.qty-a.qty);// price the likely-valuable ones first
+ sellLoading=true;let n=0;
+ for(const c of todo){
+  if(curTab!=='sell')break;
+  try{if(c.type==='gear')await getGearPrice(c.key);else await getMatPrice(c.name);}catch(e){}
+  await new Promise(r=>setTimeout(r,MKT_DELAY));
+  if(++n%5===0&&curTab==='sell')renderSellList();
+ }
+ sellLoading=false;
+ if(curTab==='sell'){renderSellSlots();renderSellList();}
+}
+// fire the "slot free" notification even when the Sell tab isn't open, and keep countdowns live
+setInterval(()=>{
+ if(!sellSlots.some(Boolean))return;
+ for(let i=0;i<SELL_SLOTS;i++){const s=sellSlots[i];if(!s)continue;
+  const key=i+':'+s.listedAt;
+  if(Date.now()>=s.listedAt+SELL_CD*1000&&!sellNotified[key]){sellNotified[key]=1;if(!demoMode){const top=sellTopFree();notify(t('sell_ntf',s.dname||s.name,top?top.dname:t('sell_anything')));}}
+ }
+ if(curTab==='sell')sellTick();
+},1000);
+
 function showToast(html){const el=$('toast');if(!el)return;el.innerHTML=html;el.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),4200);}
 function refreshToast(){let tm='—';try{tm=new Date(lastFileTime).toLocaleTimeString(LOC,{hour:'2-digit',minute:'2-digit',second:'2-digit'});}catch(e){}showToast(`<b>${t('refreshed')}</b> · ${t('refresh_savedat',tm)}<div class="t2">${t('refresh_nosync')}</div>`);}
 function setLive(on){$('dot').classList.toggle('on',on);$('connTxt').textContent=on?t('live'):t('reconnecting');}
