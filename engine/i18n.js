@@ -607,6 +607,23 @@
  };
  for (const l in CHEST) { UI[l] = Object.assign(UI[l] || {}, CHEST[l]); }
 
+ // Tab labels for Shop + History were only filled for en/pt — the other 8 main locales
+ // fell back to a lowercase English "shop"/"History" that stuck out among translated tabs.
+ // (The 6 smaller locales still fall back to English on all tabs by design.)
+ const TABFIX = {
+ 'en-US': { tab_research: 'Shop', tab_hist: 'History' },
+ 'pt-BR': { tab_research: 'Loja', tab_hist: 'Histórico' },
+ 'es-ES': { tab_research: 'Tienda', tab_hist: 'Historial' },
+ 'fr-FR': { tab_research: 'Boutique', tab_hist: 'Historique' },
+ 'de-DE': { tab_research: 'Shop', tab_hist: 'Verlauf' },
+ 'ja-JP': { tab_research: 'ショップ', tab_hist: '履歴' },
+ 'ko-KR': { tab_research: '상점', tab_hist: '기록' },
+ 'zh-Hans': { tab_research: '商店', tab_hist: '历史' },
+ 'zh-Hant': { tab_research: '商店', tab_hist: '歷史' },
+ 'ru-RU': { tab_research: 'Магазин', tab_hist: 'История' },
+ };
+ for (const l in TABFIX) { UI[l] = Object.assign(UI[l] || {}, TABFIX[l]); }
+
  // Sell Advisor tab — rank tradeable inventory + track the 4 listing slots (8h relist interval)
  const SELL = {
  'en-US': { tab_sell: 'Sell', sell_title: 'BEST TO SELL', sell_slots_title: 'LISTING SLOTS', sell_intro: 'Ranked by estimated value per 8h listing slot — unit price × how fast that grade tends to sell. List your top picks first; a cheap item that sells fast can beat a pricey one that just sits.', sell_estnote: 'Liquidity (fast/slow) is an estimate by grade, not live Steam volume — treat it as a hint.', sell_manual: 'Steam hides your active listings, so this tracker is manual: hit “list” when you post an item and the slot counts down its 8h relist interval, then dings when it’s free.', sell_inuse: '{0}/{1} slots listed', sell_slotempty: 'free slot', sell_list: 'list', sell_relist: 'relist', sell_listed: 'listed', sell_ready: 'ready to relist', sell_freein: 'free in {0}', sell_pickfree: 'all {0} slots are listed — wait for one to free up', sell_owned: '×{0}', sell_npc: '{0} gold to NPC', sell_nolist: 'not listed', sell_rankhdr: 'best value per slot first', sell_liq_fast: 'sells fast', sell_liq_med: 'medium', sell_liq_slow: 'sells slow', sell_empty: 'no tradeable items in your inventory', sell_demo: 'connect your save to rank your real inventory', sell_ntf: '{0} slot is free — relist; next best: {1}', sell_anything: 'your top item' },
