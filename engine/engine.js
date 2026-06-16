@@ -711,6 +711,35 @@
  };
  }
 
+ // ── inventory / stash browser ────────────────────────────────────────────
+ // Join every item instance (itemSaveDatas) with its slot (equipped on a hero, stash,
+ // backpack, or the trading stash) and its template (DB.items → name/grade/level/type),
+ // so the UI can reproduce the stash and filter it — something the game itself can't do.
+ const GRADE_ORDER = { COMMON: 0, UNCOMMON: 1, RARE: 2, LEGENDARY: 3, IMMORTAL: 4, ARCANA: 5, BEYOND: 6, CELESTIAL: 7, DIVINE: 8, COSMIC: 9 };
+ function inventory(psd) {
+ const loc = {}, slotOf = {}, heroOf = {};
+ for (const h of psd.heroSaveDatas || []) {
+ const eq = h.equippedItemIds || [];
+ for (let s = 0; s < eq.length; s++) { const u = eq[s]; if (u && u !== '0') { loc[String(u)] = 'equipped'; slotOf[String(u)] = s; heroOf[String(u)] = h.heroKey; } }
+ }
+ const mark = (rows, name) => { for (const r of rows || []) { const u = r.ItemUniqueId; if (u && u !== '0' && u !== 0 && !loc[String(u)]) { loc[String(u)] = name; slotOf[String(u)] = r.Index; } } };
+ mark(psd.stashSaveDatas, 'stash'); mark(psd.inventorySaveDatas, 'inventory'); mark(psd.tradingStashSaveDatas, 'trading');
+ const items = [];
+ for (const it of psd.itemSaveDatas || []) {
+ const idb = DB.items[String(it.ItemKey)] || {};
+ const u = String(it.UniqueId);
+ const enchants = Array.isArray(it.EnchantCount) ? it.EnchantCount.reduce((a, b) => a + (b || 0), 0) : 0;
+ items.push({
+ uid: u, key: it.ItemKey, name: idb.name || null, grade: idb.grade || null,
+ gradeRank: GRADE_ORDER[idb.grade] != null ? GRADE_ORDER[idb.grade] : -1,
+ level: idb.lvl != null ? idb.lvl : null, type: idb.type || null, gt: idb.gt || null,
+ icon: idb.icon || null, loc: loc[u] || 'loose', slot: slotOf[u] != null ? slotOf[u] : null,
+ hero: heroOf[u] != null ? heroOf[u] : null, enchants, blocked: !!it.IsBlocked, chaotic: !!it.IsChaotic,
+ });
+ }
+ return items;
+ }
+
  function runeROI(psd, goldPerSec, stageLevel) {
  const plan = runePlan(psd, goldPerSec, stageLevel);
  return plan.combat.filter(c => c.dPower > 0).map(c => ({ key: c.key, name: c.name, st: c.st, value: c.value, cost: c.cost, dPower: c.dPower, perGold: c.dPower / c.cost, affordable: c.affordable })).sort((a, b) => b.perGold - a.perGold);
@@ -835,7 +864,7 @@
  collect, aggregate, dps, ehp, power, mitigation,
  runeContrib, gold, party, heroSaveMap, gearStatLines, expToNext, partyExp, totalClears, cumXP, ticksToUnix, stageUnlocked,
  bestParkStage, refStageLevel, refDamage, projectLevel, fitFactor,
- bandOfLevel, dropBands, dropStages, favFarm, chestInfo,
+ bandOfLevel, dropBands, dropStages, favFarm, chestInfo, inventory,
  OFFLINE_RUNES: { gold: OFFLINE_GOLD_RUNES, exp: OFFLINE_EXP_RUNES, unlock: OFFLINE_UNLOCK_RUNE } };
  g.TBHEngine = API;
  if (typeof module !== 'undefined' && module.exports) module.exports = API;

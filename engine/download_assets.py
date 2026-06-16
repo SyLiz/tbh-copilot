@@ -25,8 +25,8 @@ for r in L('runes.json'):
 for h in L('heroes.json'):
     add(h.get('icon')); add(h.get('dead_icon'))
 for it in L('items.json'):
-    if it.get('gear') is not None:                                            
-        add(it.get('icon'))
+    # all item icons — gear, materials, and boxes — so the Gear/Shop/Items tabs render them
+    add(it.get('icon'))
 for s in L('skills.json'):
     add(s.get('icon'))
 for p in L('passive_skills.json'):

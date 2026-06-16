@@ -154,6 +154,18 @@ const ffm = E.favFarm(psd, [bowKey]);
 ok(Array.isArray(ffm), 'favFarm computes');
 if (ffm.length) ok(ffm[0].favs.length >= 1 && ffm[0].score > 0, 'favFarm top stage carries the favorite');
 
+console.log('\n-- inventory / stash --');
+const inv = E.inventory(psd);
+ok(inv.length === psd.itemSaveDatas.length, `inventory returns every item instance (${inv.length})`);
+ok(inv.every(i => ['equipped', 'stash', 'inventory', 'trading', 'loose'].includes(i.loc)), 'every item has a valid location');
+ok(inv.filter(i => i.loc === 'equipped').length > 0, 'some items resolve as equipped');
+ok(inv.filter(i => i.loc === 'stash').length > 0, 'some items resolve to the stash');
+ok(inv.filter(i => i.grade === 'LEGENDARY').length > 0, 'grade filter has legendaries to find');
+ok(inv.filter(i => i.type === 'GEAR').length > 0 && inv.filter(i => i.type === 'MATERIAL').length > 0, 'both gear and materials present');
+ok(inv.every(i => i.level == null || (i.level >= 1 && i.level <= 100)), 'item levels are sane');
+const equippedSlots = inv.filter(i => i.loc === 'equipped');
+ok(equippedSlots.every(i => i.hero != null && i.slot != null), 'equipped items carry their hero + slot');
+
 console.log('\n-- chest timers --');
 const ch = E.chestInfo(psd);
 ok(ch.normal && ch.boss && ch.act, 'chestInfo returns all three chest types');
