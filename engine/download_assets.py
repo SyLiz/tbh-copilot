@@ -31,6 +31,17 @@ for s in L('skills.json'):
     add(s.get('icon'))
 for p in L('passive_skills.json'):
     add(p.get('icon'))
+# representative monster portrait per stage (boss preferred) — the UI shows these on
+# farm/stage cards. Mirrors build_bundle.py's selection so the bundle's monsterArt resolves.
+_by_stage = {}
+for m in L('monsters.json'):
+    for s in m.get('stages', []):
+        _by_stage.setdefault(s['key'], []).append((s.get('boss', False), m))
+for lst in _by_stage.values():
+    rep = next((m for b, m in lst if b), None) \
+        or next((m for b, m in lst if m.get('MONSTERTYPE') == 'MONSTER' and 'Helm' not in (m.get('portrait') or '')), None) \
+        or lst[0][1]
+    add(rep.get('portrait'))
 
 paths = sorted(paths)
 print(f'{len(paths)} unique icon paths to fetch')

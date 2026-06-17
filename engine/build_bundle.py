@@ -274,7 +274,27 @@ for d in L('t/drops.json'):
 # gear items only; non-gear groups stay as empty lists so the weight totals stay honest
 DB['dropGroups'] = {str(g): [k for k in g2items.get(g, []) if k in gear_ids] for g in _used}
 
-                
+# stage → representative monster art (boss preferred) so the UI can show the actual
+# game creature on farm/stage cards. monsterArt dedupes portrait+name; stageMonster maps
+# each stage to its monster key. ~20 distinct creatures cover all 120 stages.
+_monsters = L('monsters.json')
+_by_stage = {}
+for m in _monsters:
+    for s in m.get('stages', []):
+        _by_stage.setdefault(s['key'], []).append((s.get('boss', False), m))
+DB['stageMonster'] = {}
+DB['monsterArt'] = {}
+for k, lst in _by_stage.items():
+    rep = next((m for b, m in lst if b), None) \
+        or next((m for b, m in lst if m.get('MONSTERTYPE') == 'MONSTER' and 'Helm' not in (m.get('portrait') or '')), None) \
+        or lst[0][1]
+    mk = rep['MonsterKey']
+    is_boss = any(b for b, m in lst if m['MonsterKey'] == mk and b)
+    DB['stageMonster'][str(k)] = {'mk': mk, 'boss': is_boss}
+    if str(mk) not in DB['monsterArt']:
+        DB['monsterArt'][str(mk)] = {'icon': rep.get('portrait'), 'name': i18n(rep.get('MonsterNameStringKey_i18n'))}
+
+
 payload = json.dumps(DB, ensure_ascii=False, separators=(',', ':'))
 out = os.path.join(ROOT, 'engine', 'gamedata.js')
 with open(out, 'w', encoding='utf-8') as f:
