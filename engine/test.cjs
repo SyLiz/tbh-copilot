@@ -200,5 +200,17 @@ const d = E.powerDelta(rangerSave, psd, 0, 314141);
 ok(d.dPower > 1000, `swapping Ranger bow->314141 raises POWER by ${round(d.dPower)} (>1000)`);
 ok(Math.abs(d.dEhp) < 1, 'pure weapon swap leaves EHP unchanged');
 
+console.log('\n-- inventory: 9-digit "...900" variant keys fall back to their 6-digit base template --');
+{
+ const baseKey = Object.keys(E.DB.items).find(k => k.length === 6 && E.DB.items[k].gt && E.DB.items[k].grade);
+ const tmpl = baseKey ? E.DB.items[baseKey] : null;
+ const fakePsd = { itemSaveDatas: [{ ItemKey: Number(baseKey) * 1000 + 900, UniqueId: 999000111, EnchantCount: [0, 0, 0] }] };
+ const fb = E.inventory(fakePsd);
+ ok(!!baseKey, 'found a gear template to exercise the fallback');
+ eq(String(fb[0].key), baseKey, '900-suffix gear resolves to its 6-digit base (not a bare #key)');
+ eq(fb[0].grade, tmpl && tmpl.grade, '900-suffix gear inherits the base grade');
+ eq(fb[0].gt, tmpl && tmpl.gt, '900-suffix gear inherits the base gear type');
+}
+
 console.log(`\n=== ${pass} passed, ${fail} failed ===`);
 process.exit(fail ? 1 : 0);

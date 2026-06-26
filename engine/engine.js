@@ -764,11 +764,14 @@
  mark(psd.stashSaveDatas, 'stash'); mark(psd.inventorySaveDatas, 'inventory'); mark(psd.tradingStashSaveDatas, 'trading');
  const items = [];
  for (const it of psd.itemSaveDatas || []) {
- const idb = DB.items[String(it.ItemKey)] || {};
+ // some gear instances carry a 9-digit ItemKey = <6-digit template>*1000 + a 900 variant suffix the item DB doesn't list; fall back to the base template so name/grade/type/icon resolve instead of a bare "#<key>" with a broken icon.
+   let key = it.ItemKey, idb = DB.items[String(key)];
+   if (!idb) { const base = Math.floor(key / 1000); if (DB.items[String(base)]) { key = base; idb = DB.items[String(base)]; } }
+   idb = idb || {};
  const u = String(it.UniqueId);
  const enchants = Array.isArray(it.EnchantCount) ? it.EnchantCount.reduce((a, b) => a + (b || 0), 0) : 0;
  items.push({
- uid: u, key: it.ItemKey, name: idb.name || null, grade: idb.grade || null,
+ uid: u, key: key, name: idb.name || null, grade: idb.grade || null,
  gradeRank: GRADE_ORDER[idb.grade] != null ? GRADE_ORDER[idb.grade] : -1,
  level: idb.lvl != null ? idb.lvl : null, type: idb.type || null, gt: idb.gt || null,
  icon: idb.icon || null, loc: loc[u] || 'loose', slot: slotOf[u] != null ? slotOf[u] : null,
