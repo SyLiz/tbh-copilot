@@ -294,6 +294,58 @@ for k, lst in _by_stage.items():
     if str(mk) not in DB['monsterArt']:
         DB['monsterArt'][str(mk)] = {'icon': rep.get('portrait'), 'name': i18n(rep.get('MonsterNameStringKey_i18n'))}
 
+# ── cube/crafting ROI: each crafting recipe (per gear slot + tier) spends materials and rolls a
+# DropKey for a random-grade gear outcome. Precompute, per recipe, the material list and the outcome
+# distribution AGGREGATED BY GRADE (total weight + one representative item key per grade, so the UI
+# can fetch a live market price and compute expected value / ROI). Lean: ~4 grades per recipe. ──
+_item_by_id = {it['id']: it for it in _items}
+def _reward_grade_rep(rk):
+    it = _item_by_id.get(rk)
+    if it:
+        return it.get('grade'), rk
+    grp = g2items.get(rk)
+    if grp:
+        first = _item_by_id.get(grp[0])
+        if first:
+            return first.get('grade'), grp[0]
+    return None, None
+_drops_by_key = {}
+for d in L('t/drops.json'):
+    _drops_by_key.setdefault(d['DropKey'], []).append(d)
+def _outcomes_by_grade(drop_key):
+    agg = {}
+    for d in _drops_by_key.get(drop_key, []):
+        g, rep = _reward_grade_rep(d['RewardKey'])
+        if not g:
+            continue
+        e = agg.setdefault(g, {'w': 0, 'rep': rep})
+        e['w'] += d.get('Weight', 0)
+    return [{'g': g, 'rep': e['rep'], 'w': e['w']} for g, e in agg.items()]
+def _recipe_mats(rows):
+    # a recipe's Material can list several materials in one space-separated field
+    # (e.g. SubWeapon/Accessory: "140003_1 140004_1"), each token "<itemKey>_<qty>".
+    mats = []
+    for r in rows:
+        for tok in str(r.get('Material') or '').split():
+            if '_' in tok:
+                k, q = tok.split('_', 1)
+                try:
+                    mats.append([int(k), int(q)])
+                except ValueError:
+                    pass
+    return mats
+_craft_rows = {}
+for r in L('t/crafting_recipes.json'):
+    _craft_rows.setdefault(r['CraftingRecipeKey'], []).append(r)
+DB['craft'] = {}
+for ck, rows in _craft_rows.items():
+    dk = rows[0].get('DropKey')
+    outs = _outcomes_by_grade(dk) if dk else []
+    if not outs:
+        continue
+    DB['craft'][str(ck)] = {'type': rows[0].get('ItemCraftingType'), 'tier': rows[0].get('RecipeTier'),
+                            'mats': _recipe_mats(rows), 'outs': outs}
+
 
 payload = json.dumps(DB, ensure_ascii=False, separators=(',', ':'))
 out = os.path.join(ROOT, 'engine', 'gamedata.js')
