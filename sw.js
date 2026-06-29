@@ -1,7 +1,9 @@
 // TBH Co-pilot service worker.
 // Network-first for the app shell (html/js — a deploy always wins; cache only serves
 // offline), cache-first for game art under assets/ (immutable pixel sprites).
-const CACHE = 'tbh-shell-1';
+// The HTML document is fetched with cache:'no-store' so a deploy is visible instantly
+// instead of waiting out GitHub Pages' ~10-min HTTP cache on the unversioned dashboard.html.
+const CACHE = 'tbh-shell-2';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
@@ -22,8 +24,11 @@ self.addEventListener('fetch', e => {
     }));
     return;
   }
+  // The HTML doc is unversioned (no ?v=), so bypass the HTTP cache to always get the
+  // freshest deploy; the ?v-stamped JS bundles can use the normal network-first path.
+  const isDoc = e.request.mode === 'navigate' || u.pathname.endsWith('.html') || u.pathname.endsWith('/');
   e.respondWith(
-    fetch(e.request).then(r => {
+    fetch(isDoc ? new Request(e.request.url, { cache: 'no-store' }) : e.request).then(r => {
       if (r.ok) caches.open(CACHE).then(c => c.put(e.request, r.clone()));
       return r;
     }).catch(() => caches.match(e.request).then(hit => hit || Response.error()))
