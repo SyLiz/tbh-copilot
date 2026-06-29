@@ -37,6 +37,7 @@ nothing ever leaves your machine.
 | **Party roster** | Game sprites, DPS share, EHP, level and XP/ETA, unspent ability points, equipped gear. Click a hero for a full stat sheet that breaks every stat down by source. |
 | **Builds** | Curated team comps (tiered S/A/B) and a per-class build for all six heroes — recommended skills, passive priority and gear stats. Save-aware: it marks the heroes you own, flags your current formation, and shows what each comp still needs. |
 | **Farm optimizer** | The wiki Farming Optimizer idea, automated. It calibrates your real clear rate from your measured gold/sec and ranks every cleared stage by gold/hour and exp/hour, with a sortable table (clear time, EXP/HP and Gold/HP density) and level/gold projections at 1/3/5/8 h. It sends you to the dense, fast stage instead of an unclearable floor. |
+| **Records** | Your fastest clear time per stage — auto-captured as you play and editable by hand — shown next to the meta benchmark from the build videos, so you can see how your runs stack up. |
 | **Idle / return timer** | Offline reward curve, the optimal time to come back (the 8 h cap), and what to park on first. |
 | **Interactive rune tree** | All 197 nodes laid out and colored by category. Pick a category (EXP, Combat, Gold, Items, Chest, Inventory, Offline, Utility) and the tree highlights that branch and lists the three cheapest buyable nodes. Almost-free runes are called out. |
 | **Gear comparator** | For any slot, the DPS / EHP delta of every item: the ones in your bag and the ones you don't have yet (capped to gear you can realistically farm), with live Steam Market prices, listing links, and **where each item drops**. ★ an item and the Farm tab gains a wishlist view that ranks stages by where your favorites actually drop. |
@@ -72,8 +73,8 @@ Then:
    demand — click the refresh button to re-read. Or click **demo** to look around first.
 
 Everything lives on one page: an **Overview** (party roster and what-to-do-now), curated **Builds**, the
-**Farm** optimizer, the **Runes** tree, a **Gear** comparator, the **Shop** build planner, and a **Sell**
-advisor.
+**Farm** optimizer, your **Records** (clear-time PBs), the **Runes** tree, a **Gear** comparator, the
+**Shop** build planner, and a **Sell** advisor.
 
 ## How it works
 
